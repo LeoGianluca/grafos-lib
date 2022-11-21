@@ -1,7 +1,7 @@
-
 import unittest
 
 import src.mod as module
+
 
 class Testing(unittest.TestCase):
     def test_soma(self):
