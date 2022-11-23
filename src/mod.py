@@ -1,21 +1,23 @@
-
 def soma(a, b):
     return a + b
 
 
-def read_matrix(file):
-    print('Lendo matriz')
-    with open(file, 'r') as f:
-        matriz = []
-        for line in f:
-            matriz.append([int(x) for x in line.split(',')])
-    return matriz
+def read(file):
+    print('')
+    print('Realizando leitura do arquivo de entrada')
+
+    return read_file(file)
 
 
-def read_list(file):
-    print('Lendo lista')
+def read_file(file):
     with open(file, 'r') as f:
-        lista = []
+        file_content = []
+
         for line in f:
-            lista.append([int(x) for x in line.split(',')])
-    return lista
+            file_content.append([int(x) for x in line.split(',')])
+
+    print('Inspecionando dados obtidos do arquivo de entrada')
+    print(file_content)
+    print('')
+
+    return file_content
