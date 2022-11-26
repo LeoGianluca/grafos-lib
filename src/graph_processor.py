@@ -3,7 +3,6 @@ class GraphProcessor:
     Classe de manipulação de grafos
     """
 
-    # TODO Conferir o batimento de todos os metodos da classe com os requisitos do trabalho
     def __init__(self, input_format, input_content):
         self.input_format = input_format
         self.input_content = input_content
@@ -53,10 +52,27 @@ class GraphProcessor:
         print(self.input_content)
         pass
 
-# checagem_adjacencia_vertices
-# checagem_adjacencia_arestas
-# checagem_adjacencia_arestas
-# checagem_quantidade_vertices
-# checagem_quantidade_arestas
-# checagem_grafo_vazio
-# checagem_grafo_completo
+    def checagem_existencia_arestas(self):
+        print(f"Execuntando 'checagem_existencia_arestas'")
+        print(self.input_content)
+        pass
+
+    def checagem_quantidade_vertices(self):
+        print(f"Execuntando 'checagem_quantidade_vertices'")
+        print(self.input_content)
+        pass
+
+    def checagem_quantidade_arestas(self):
+        print(f"Execuntando 'checagem_quantidade_arestas'")
+        print(self.input_content)
+        pass
+
+    def checagem_grafo_vazio(self):
+        print(f"Execuntando 'checagem_grafo_vazio'")
+        print(self.input_content)
+        pass
+
+    def checagem_grafo_completo(self):
+        print(f"Execuntando 'checagem_grafo_completo'")
+        print(self.input_content)
+        pass

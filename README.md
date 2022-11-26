@@ -55,7 +55,7 @@ python3 main.py --format=matriz --file=data/matriz-1.csv --operation=checagem_ad
 ```
 
 ```bash
-Cenário 6 - Checagem de adjacência entre arestas
+Cenário 6 - Checagem de existência de arestas
 
 python3 main.py --format=matriz --file=data/matriz-1.csv --operation=checagem_adjacencia_arestas
 ```
@@ -68,7 +68,7 @@ python3 main.py --format=matriz --file=data/matriz-1.csv --operation=checagem_qu
 ```
 
 ```bash
-Cenário 7 - Checagem de grafo vazio e completo
+Cenário 8 - Checagem de grafo vazio e completo
 
 python main.py --format=matriz --file=data/matriz-1.csv --operation=checagem_grafo_vazio
 python main.py --format=matriz --file=data/matriz-1.csv --operation=checagem_grafo_completo

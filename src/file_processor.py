@@ -1,5 +1,6 @@
-def soma(a, b):
-    return a + b
+"""
+Métodos utilitários para processamento de arquivos
+"""
 
 
 def read(file):
@@ -21,3 +22,7 @@ def read_file(file):
     print('')
 
     return file_content
+
+
+def soma(a, b):
+    return a + b

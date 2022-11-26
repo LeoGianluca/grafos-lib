@@ -1,6 +1,6 @@
 import unittest
 
-import src.mod as module
+import src.file_processor as module
 
 
 class Testing(unittest.TestCase):
