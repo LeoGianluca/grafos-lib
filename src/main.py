@@ -31,15 +31,15 @@ def main():
 
     # Dicionário de mapeamento do parametro de entrada (--operation) para o método de processamento correspondente
     # para métodos com 1 argumento adicional
-    functions_no_extra_args = {
+    functions_extra_args = {
         'criacao_grafo_x_vertices': graph_processor.criacao_grafo_x_vertices,
         'criacao_arestas': graph_processor.criacao_arestas,
+        'remocao_arestas': graph_processor.remocao_arestas,
     }
 
     # Dicionário de mapeamento do parametro de entrada (--operation) para o método de processamento correspondente
     # para métodos sem argumentos
-    functions_extra_arg = {
-        'remocao_arestas': graph_processor.remocao_arestas,
+    functions_no_extra_args= {
         'ponderacao_vertices': graph_processor.ponderacao_vertices,
         'rotulacao_vertices': graph_processor.rotulacao_vertices,
         'ponderacao_arestas': graph_processor.ponderacao_arestas,
@@ -60,10 +60,10 @@ def main():
     print("")
 
     # Verificando a lista de funções e executando o método, caso localizado
-    if func_name in functions_extra_arg:
-        functions_extra_arg[func_name]()
+    if func_name in functions_extra_args:
+        functions_extra_args[func_name](args.extra_args)
     elif func_name in functions_no_extra_args:
-        functions_no_extra_args[func_name](args.extra_args)
+        functions_no_extra_args[func_name]()
     else:
         print("Operação não localizada, verifique a documentação")
 
