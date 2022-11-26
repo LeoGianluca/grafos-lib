@@ -69,6 +69,7 @@ def main():
 
 
 if __name__ == '__main__':
+    print('')
     print('Trabalho de teoria de grafos e computabilidade (Eng Software / PUC Minas)')
     print('Aluno: Leonardo Gianluca')
     print('')
