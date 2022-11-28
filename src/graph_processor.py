@@ -1,21 +1,39 @@
+from collections import defaultdict
+
+from graph import Grafo
+
+
 class GraphProcessor:
     """
     Classe de manipulação de grafos
     """
 
-    def __init__(self, input_format, input_content):
+    def __init__(self, input_format, input_content, directed=False):
         self.input_format = input_format
         self.input_content = input_content
+        self.adj = defaultdict(set)
+        self.directed = directed
 
     def criacao_grafo_x_vertices(self, extra_args):
         print(f"Execuntando 'criacao_grafo_x_vertices' [extra_args={extra_args}]")
-        print(self.input_content)
-        pass
+
+        for i in range(0, int(extra_args)):
+            randomUpperLetter = chr(random.randint(ord('A'), ord('Z')))
+            self.adj[randomUpperLetter] = set()
+
+        # Cria a lista de arestas.
+        arestas = [('A', 'B'), ('B', 'C'), ('B', 'D'), ('C', 'B'), ('C', 'E'), ('D', 'A'), ('E', 'B')]
+
+        # Cria e imprime o grafo.
+        grafo = Grafo(arestas, direcionado=True)
+        print(grafo.adj)
+
+        # graph = graphlib(self.adj, self.directed)
+
+        # graph.print()
 
     def criacao_arestas(self, extra_args):
         print(f"Execuntando 'criacao_arestas' [extra_args={extra_args}]")
-        print(self.input_content)
-        pass
 
     def remocao_arestas(self, extra_args):
         print(f"Execuntando 'remocao_arestas' [extra_args={extra_args}]")

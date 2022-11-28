@@ -27,7 +27,7 @@ def main():
 
     matriz = file_processor.read(args.file)
 
-    graph_processor = GraphProcessor(args.format, matriz)
+    graph_processor = GraphProcessor(args.format, matriz, False)
 
     # Dicionário de mapeamento do parametro de entrada (--operation) para o método de processamento correspondente
     # para métodos com 1 argumento adicional
