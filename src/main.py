@@ -18,16 +18,9 @@ def main():
 
     args = parser.parse_args()
 
-    if args.format == 'matriz':
-        print('Processando MATRIZ de adjacencias')
-    elif args.format == 'lista':
-        print('Processando LISTA de adjacencias')
-    else:
-        parser.print_help()
+    graph_info = file_processor.read(args.file, args.format)
 
-    matriz = file_processor.read(args.file)
-
-    graph_processor = GraphProcessor(args.format, matriz, False)
+    graph_processor = GraphProcessor(args.format, graph_info)
 
     # Dicionário de mapeamento do parametro de entrada (--operation) para o método de processamento correspondente
     # para métodos com 1 argumento adicional
