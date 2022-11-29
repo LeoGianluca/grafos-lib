@@ -18,7 +18,7 @@ class GraphProcessor:
         else:
             self.grafo = None
 
-        print(f'Arestas: {self.grafo.get_arestas()}')
+        self.grafo.print_grafo()
 
     def criacao_grafo_x_vertices(self, extra_args):
         print(f"Execuntando 'criacao_grafo_x_vertices' [extra_args={extra_args}]")
@@ -26,7 +26,7 @@ class GraphProcessor:
         # Gerando um grafo com x vértices aleatóriamente com letras de A a Z não repetidas
         vertices = []
         for i in range(0, int(extra_args)):
-            randomNumber = random.randint(1, 1000)
+            randomNumber = random.randint(1, 10000)
             if randomNumber not in vertices:
                 vertices.append(randomNumber)
             else:
@@ -42,27 +42,44 @@ class GraphProcessor:
 
         # Cria e imprime o grafo.
         self.grafo = Grafo(arestas, direcionado=True)
-        print(self.grafo.adj)
+        print(self.grafo)
 
     def criacao_arestas(self, extra_args):
         print(f"Execuntando 'criacao_arestas' [extra_args={extra_args}]")
 
         # gera arestas aleatórias a classe Grafo sem criar arestas repetidas
+        arestas = self.grafo.get_arestas()
+        novas_arestas = []
         for i in range(0, int(extra_args)):
-            randomUpperLetter = self.grafo.vertices 
+            randomNumber = random.randint(1, 10000)
+            if randomNumber not in arestas:
+                novas_arestas.append([i, randomNumber])
+            else:
+                randomNumber = random.randint(1, 1000)
+                novas_arestas.append([i, randomNumber])
+
+        print("Arestas Originais: ", arestas)
+        print("Arestas Novas: ", novas_arestas)
+
+        self.grafo.adiciona_arestas(novas_arestas)
 
     def remocao_arestas(self, extra_args):
         print(f"Execuntando 'remocao_arestas' [extra_args={extra_args}]")
+
+        extra_args = extra_args.split("|")
+        print(extra_args)
+
+        for extra_arg in extra_args:
+            aux = extra_arg.split(";")
+            self.grafo.remove_arestas(extra_arg[0], extra_arg[1])
+
+    def rotulacao_vertices(self):
+        print(f"Execuntando 'rotulacao_vertices'")
         print(self.input_content)
         pass
 
     def ponderacao_vertices(self):
         print(f"Execuntando 'ponderacao_vertices'")
-        print(self.input_content)
-        pass
-
-    def rotulacao_vertices(self):
-        print(f"Execuntando 'rotulacao_vertices'")
         print(self.input_content)
         pass
 

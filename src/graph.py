@@ -35,6 +35,21 @@ class Grafo(object):
         """ Existe uma aresta entre os vértices 'u' e 'v'? """
         return u in self.adj and v in self.adj[u]
 
+    def remove_arestas(self, arestas):
+        """ Remove arestas do grafo. """
+        for u, v in arestas:
+            self.remove_arco(u, v)
+
+    def remove_arco(self, u, v):
+        """ Remove a ligação (arco) entre os nodos 'u' e 'v'. """
+        self.adj[u].remove(v)
+        # Se o grafo é não-direcionado, precisamos remover arcos nos dois sentidos.
+        if not self.direcionado:
+            self.adj[v].remove(u)
+
+    def print_grafo(self):
+        print(self.__str__())
+
     def __len__(self):
         return len(self.adj)
 
