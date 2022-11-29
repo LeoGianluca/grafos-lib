@@ -93,37 +93,51 @@ class GraphProcessor:
         print(self.input_content)
         pass
 
-    def checagem_adjacencia_vertices(self):
-        print(f"Execuntando 'checagem_adjacencia_vertices'")
-        print(self.input_content)
-        pass
+    def checagem_adjacencia_vertices(self, extra_args):
+        print(f"Execuntando 'checagem_adjacencia_vertices' [extra_args={extra_args}]")
 
-    def checagem_adjacencia_arestas(self):
-        print(f"Execuntando 'checagem_adjacencia_arestas'")
-        print(self.input_content)
-        pass
+        adjacentes = self.grafo.vertices_adjacentes(extra_args)
 
-    def checagem_existencia_arestas(self):
-        print(f"Execuntando 'checagem_existencia_arestas'")
-        print(self.input_content)
-        pass
+        print(f"Adjacentes ao vertice {extra_args}: ", adjacentes)
+
+    def checagem_adjacencia_arestas(self, extra_args):
+        print(f"Execuntando 'checagem_adjacencia_arestas' [extra_args={extra_args}]")
+
+        adjacentes = self.grafo.arestas_adjacentes(extra_args)
+
+        print(f"Adjacentes a aresta {extra_args}: ", adjacentes)
+
+    def checagem_existencia_arestas(self, extra_args):
+        print(f"Execuntando 'checagem_existencia_arestas' [extra_args={extra_args}]")
+
+        extra_args = extra_args.split(";")
+
+        arestas = self.grafo.existe_aresta(extra_args[0], extra_args[1])
+
+        print(f"Existe aresta entre {extra_args[0]} e {extra_args[1]}? {arestas}")
 
     def checagem_quantidade_vertices(self):
         print(f"Execuntando 'checagem_quantidade_vertices'")
-        print(self.input_content)
-        pass
+
+        print(f"Quantidade de vertices: {len(self.grafo.get_vertices())}")
 
     def checagem_quantidade_arestas(self):
         print(f"Execuntando 'checagem_quantidade_arestas'")
-        print(self.input_content)
-        pass
+
+        print(f"Quantidade de arestas: {len(self.grafo.get_arestas())}")
 
     def checagem_grafo_vazio(self):
         print(f"Execuntando 'checagem_grafo_vazio'")
-        print(self.input_content)
-        pass
+
+        if not self.grafo.get_arestas():
+            print("Grafo vazio")
+        else:
+            print("Grafo não vazio")
 
     def checagem_grafo_completo(self):
         print(f"Execuntando 'checagem_grafo_completo'")
-        print(self.input_content)
-        pass
+
+        if self.grafo.grafo_completo():
+            print("Grafo completo")
+        else:
+            print("Grafo não completo")

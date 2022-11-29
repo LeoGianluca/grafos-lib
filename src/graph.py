@@ -33,7 +33,10 @@ class Grafo(object):
 
     def existe_aresta(self, u, v):
         """ Existe uma aresta entre os vértices 'u' e 'v'? """
-        return u in self.adj and v in self.adj[u]
+        if u in self.adj:
+            v in self.adj[u]
+        else:
+            return False
 
     def remove_arco(self, u, v):
         """ Remove a ligação (arco) entre os nodos 'u' e 'v'. """
@@ -41,6 +44,19 @@ class Grafo(object):
         # Se o grafo é não-direcionado, precisamos remover arcos nos dois sentidos.
         if not self.direcionado:
             self.adj[v].remove(u)
+
+    def vertices_adjacentes(self, v):
+        """ Retorna os vértices adjacentes ao vértice 'v'. """
+        return self.adj[v]
+
+    def arestas_adjacentes(self, v):
+        """ Retorna as arestas adjacentes ao vértice 'v'. """
+        return [(v, u) for u in self.adj[v]]
+
+    def grafo_completo(self):
+        """ Retorna um grafo completo. """
+        arestas = [(i, j) for i in self.get_vertices() for j in self.get_vertices()]
+        return Grafo(arestas, self.direcionado)
 
     def print_grafo(self):
         print(self.__str__())
