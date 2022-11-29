@@ -26,12 +26,12 @@ class GraphProcessor:
         # Gerando um grafo com x vértices aleatóriamente com letras de A a Z não repetidas
         vertices = []
         for i in range(0, int(extra_args)):
-            randomNumber = random.randint(1, 10000)
-            if randomNumber not in vertices:
-                vertices.append(randomNumber)
+            random_number = random.randint(1, 10000)
+            if random_number not in vertices:
+                vertices.append(random_number)
             else:
-                randomNumber = random.randint(1, 1000)
-                vertices.append(randomNumber)
+                random_number = random.randint(1, 1000)
+                vertices.append(random_number)
 
         print("Vertices: ", vertices)
 
@@ -51,12 +51,12 @@ class GraphProcessor:
         arestas = self.grafo.get_arestas()
         novas_arestas = []
         for i in range(0, int(extra_args)):
-            randomNumber = random.randint(1, 10000)
-            if randomNumber not in arestas:
-                novas_arestas.append([i, randomNumber])
+            random_number = random.randint(1, 10000)
+            if random_number not in arestas:
+                novas_arestas.append([i, random_number])
             else:
-                randomNumber = random.randint(1, 1000)
-                novas_arestas.append([i, randomNumber])
+                random_number = random.randint(1, 1000)
+                novas_arestas.append([i, random_number])
 
         print("Arestas Originais: ", arestas)
         print("Arestas Novas: ", novas_arestas)
@@ -71,7 +71,7 @@ class GraphProcessor:
 
         for extra_arg in extra_args:
             aux = extra_arg.split(";")
-            self.grafo.remove_arestas(extra_arg[0], extra_arg[1])
+            self.grafo.remove_arco(aux[0], aux[1])
 
     def rotulacao_vertices(self):
         print(f"Execuntando 'rotulacao_vertices'")
