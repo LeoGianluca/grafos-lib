@@ -2,8 +2,6 @@
 Métodos utilitários para processamento de arquivos
 """
 
-import pprint
-
 
 def read(file, file_type):
     print(f'Processando arquivo (arquivo={file}, tipo={file_type})')
@@ -52,59 +50,51 @@ def read_file_matrix(file):
     :return: representacao do conjunto de arestas do grafo
     """
     with open(file, 'r') as f:
-        file_lines = [(line_num, line) for line_num, line in enumerate(f)]
-        # matrix = list()
+        arestas = []
+        vertices_finais = []
 
-        vertices_colmns = []
+        file_lines = [(line_num, line) for line_num, line in enumerate(f)]
+
+        print('')
 
         for line in file_lines:
             line_number = line[0]
             line_content = line[1]
 
-            print(f'line_number={line_number}, line_content={line_content}')
+            line_splited_values = line_content.rstrip().split(';')
 
-            line_content = line_content.rstrip()  # Remove espacos a direita
+            # Processando primeira linha do arquivo,
+            # referente ao cabecalho com lista de nós em colunas
+            if line_number == 0:
+                vertices_finais = line_splited_values
+                vertices_finais.pop(0)
+                continue
 
-            line_splited_values = line_content.split(';')
-
-            if line_number == 0:  # Lendo primeira linha com lista de nós em colunas
-                for val in line_splited_values:
-                    vertices_colmns.append(val)
-
-            values = list()
+            line_values = list()
 
             for val in line_splited_values:
-                values.append(val)
+                line_values.append(val)
 
-            print(f'values: {values}')
-        #     matrix.append(values)
+            for idx, val in enumerate(line_values):
+                if idx == 0:
+                    vertice1 = line_values[0]
+                    print(f'Processando conexões para o vértice {vertice1}')  # ignorando primeira valor (rótulo do vértice)
+                    continue
 
-        print(f'vertices_colmns: {vertices_colmns}')
+                if int(val) > 0:
+                    vertice2 = vertices_finais[int(idx) - 1]
 
-        # row_num = 6
-        # col_num = 6
-        # adjacency_matrix = []
-        #
-        # for i in range(row_num):
-        #     row = []
-        #     for j in range(col_num):
-        #         row.append(0)
-        #     adjacency_matrix.append(row)
-        #
-        # edges = [(1, 2), (2, 4), (2, 3), (3, 4), (4, 5), (3, 6), (5, 6)]
-        #
-        # for edge in edges:
-        #     row = edge[0]
-        #     col = edge[1]
-        #     adjacency_matrix[row - 1][col - 1] = 1
-        #     adjacency_matrix[col - 1][row - 1] = 1
-        #
-        # print("The edges in the graph are:")
-        # print(edges)
-        # print("The adjacency matrix is:")
-        # pprint.pprint(adjacency_matrix)
+                    if vertice1 != vertice2:  # Ignorando auto-conexões (A, A), (B, B) e etc
+                        arestas.append([vertice1, vertice2])
+                        print(f'  Vértice ligado = {vertice2} ({val})')
+                    else:
+                        print(f'  Vértice auto-conectado [({vertice1}, {vertice2}) ({val})] [* Ignorado *]')
 
-    # return matrix
+        print('')
+        print(f'Arestas: {arestas}')
+        print('========')
+
+        return arestas
 
 
 def soma(a, b):
