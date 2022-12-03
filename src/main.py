@@ -8,13 +8,15 @@ def main():
     # Cria um parser de argumentos
     parser = argparse.ArgumentParser(
         prog='main.py',
-        epilog='Ex: python main.py --format=matriz --file=data/teste-matriz-1.csv --operation=criacao_arestas --extra_args=2'
+        epilog='Ex: python main.py --format=matriz --file-in=data/in/teste-matriz-1.csv --file-out=data/out/criacao-arestas-output.csv --operation=criacao_arestas --extra_args=2'
     )
 
     # Adiciona os argumentos
     parser.add_argument('--format', type=str, help='Formato do arquivo de entrada', choices=['matriz', 'lista'],
                         required=True)
-    parser.add_argument('--file', type=str, help='Arquivo de entrada (Ex: data/teste-matriz-1.csv ou data/teste-lista-1.csv)',
+    parser.add_argument('--file-in', type=str, help='Arquivo de entrada (Ex: data/in/teste-matriz-1.csv ou data/in/teste-lista-1.csv)',
+                        required=True)
+    parser.add_argument('--file-out', type=str, help='Arquivo de saída (Ex: data/out/criacao-arestas-output.csv)',
                         required=True)
     parser.add_argument('--operation', type=str, help='Operacao a ser realizada (Ex: ponderacao_vertices)',
                         required=True)
