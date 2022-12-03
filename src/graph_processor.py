@@ -26,11 +26,11 @@ class GraphProcessor:
         # Gerando um grafo com x vértices aleatóriamente com letras de A a Z não repetidas
         vertices = []
         for i in range(0, int(extra_args)):
-            random_number = random.randint(1, 10000)
+            random_number = random.randint(1, 11000)
             if random_number not in vertices:
                 vertices.append(random_number)
             else:
-                random_number = random.randint(1, 1000)
+                random_number = random.randint(1, 11000)
                 vertices.append(random_number)
 
         print("Vertices: ", vertices)
@@ -51,11 +51,11 @@ class GraphProcessor:
         arestas = self.grafo.get_arestas()
         novas_arestas = []
         for i in range(0, int(extra_args)):
-            random_number = random.randint(1, 10000)
+            random_number = random.randint(1, 11000)
             if random_number not in arestas:
                 novas_arestas.append([i, random_number])
             else:
-                random_number = random.randint(1, 1000)
+                random_number = random.randint(1, 11000)
                 novas_arestas.append([i, random_number])
 
         print("Arestas Originais: ", arestas)
@@ -75,23 +75,36 @@ class GraphProcessor:
 
     def rotulacao_vertices(self):
         print(f"Execuntando 'rotulacao_vertices'")
-        print(self.input_content)
-        pass
+        self.grafo.rotula_vertices()
 
-    def ponderacao_vertices(self):
-        print(f"Execuntando 'ponderacao_vertices'")
-        print(self.input_content)
-        pass
+    def busca_em_profundidade(self, extra_args):
+        print(f"Execuntando 'busca_em_profundidade' [extra_args={extra_args}]")
+        self.grafo.busca_em_profundidade(extra_args)
 
-    def ponderacao_arestas(self):
-        print(f"Execuntando 'ponderacao_arestas'")
-        print(self.input_content)
-        pass
+    def busca_em_largura(self, extra_args):
+        print(f"Execuntando 'busca_em_largura' [extra_args={extra_args}]")
+        self.grafo.busca_em_largura(extra_args)
 
-    def rotulacao_arestas(self):
-        print(f"Execuntando 'rotulacao_arestas'")
-        print(self.input_content)
-        pass
+    def componentes_conexas(self):
+        print(f"Execuntando 'componentes_conexas'")
+        self.grafo.componentes_conexas()
+
+    def caminho_minimo(self, extra_args):
+        print(f"Execuntando 'caminho_minimo' [extra_args={extra_args}]")
+        self.grafo.caminho_minimo(extra_args)
+
+    def ponderacao_arestas(self, extra_args):
+        print(f"Execuntando 'ponderacao_arestas' [extra_args={extra_args}]")
+        # TODO: Implementar
+        self.grafo.pondera_arestas()
+
+    def rotulacao_vertices(self, extra_args):
+        print(f"Execuntando 'rotulacao_vertices' [extra_args={extra_args}]")
+        self.grafo.rotula_vertices(extra_args)
+
+    def rotulacao_arestas(self, extra_args):
+        print(f"Execuntando 'rotulacao_arestas' [extra_args={extra_args}]")
+        self.grafo.rotula_arestas(extra_args)
 
     def checagem_adjacencia_vertices(self, extra_args):
         print(f"Execuntando 'checagem_adjacencia_vertices' [extra_args={extra_args}]")
