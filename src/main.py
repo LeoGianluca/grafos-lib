@@ -5,11 +5,13 @@ from graph_processor import GraphProcessor
 
 
 def main():
+    # Cria um parser de argumentos
     parser = argparse.ArgumentParser(
         prog='main.py',
         epilog='Ex: python main.py --format=matriz --file=data/matriz-1.csv --operation=criacao_arestas --extra_args=2'
     )
 
+    # Adiciona os argumentos
     parser.add_argument('--format', type=str, help='Formato do arquivo de entrada', choices=['matriz', 'lista'],
                         required=True)
     parser.add_argument('--file', type=str, help='Arquivo de entrada (Ex: data/matriz-1.csv ou data/lista-1.csv)',
@@ -20,10 +22,13 @@ def main():
                         help='[Opcional] Argumentos extras, veja README.md para documentacao completa '
                              '(Ex: extra_args=3)', required=False)
 
+    # Pega os argumentos
     args = parser.parse_args()
 
+    # Pega o conteúdo do arquivo
     graph_info = file_processor.read(args.file, args.format)
 
+    # Cria um processador de grafos
     graph_processor = GraphProcessor(args.format, graph_info)
 
     # Dicionário de mapeamento do parametro de entrada (--operation) para o método de processamento correspondente
@@ -57,11 +62,11 @@ def main():
     print("")
 
     # Verificando a lista de funções e executando o método, caso localizado
-    if func_name in functions_extra_args:
-        functions_extra_args[func_name](args.extra_args)
-    elif func_name in functions_no_extra_args:
-        functions_no_extra_args[func_name]()
-    else:
+    if func_name in functions_extra_args:  # Verifica se a operação informada possui argumentos extras
+        functions_extra_args[func_name](args.extra_args)  # Executa o método correspondente
+    elif func_name in functions_no_extra_args:  # Verifica se a operação informada não possui argumentos extras
+        functions_no_extra_args[func_name]()  # Executa o método correspondente
+    else:  # Caso a operação informada não seja localizada
         print("Operação não localizada, verifique a documentação")
 
 
