@@ -19,8 +19,6 @@ class GraphProcessor:
         else:  # Se o conteúdo de entrada for nulo
             self.grafo = None  # O grafo é nulo
 
-        self.grafo.print_grafo()  # Imprime o grafo
-
     def criacao_grafo_x_vertices(self, extra_args):
         print(f"Execuntando 'criacao_grafo_x_vertices' [extra_args={extra_args}]")
 

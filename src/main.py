@@ -8,27 +8,31 @@ def main():
     # Cria um parser de argumentos
     parser = argparse.ArgumentParser(
         prog='main.py',
-        epilog='Ex: python main.py --format=matriz --file-in=data/in/teste-matriz-1.csv --file-out=data/out/criacao-arestas-output.csv --operation=criacao_arestas --extra_args=2'
+        epilog='Ex: python main.py '
+               '--format=matriz '
+               '--file-in=data/in/teste-matriz-1.csv '
+               '--file-out=data/out/criacao-arestas-output.csv '
+               '--operation=criacao_arestas '
+               '--extra_args=2'
     )
 
     # Adiciona os argumentos
-    parser.add_argument('--format', type=str, help='Formato do arquivo de entrada', choices=['matriz', 'lista'],
-                        required=True)
-    parser.add_argument('--file-in', type=str, help='Arquivo de entrada (Ex: data/in/teste-matriz-1.csv ou data/in/teste-lista-1.csv)',
-                        required=True)
-    parser.add_argument('--file-out', type=str, help='Arquivo de saída (Ex: data/out/criacao-arestas-output.csv)',
-                        required=True)
-    parser.add_argument('--operation', type=str, help='Operacao a ser realizada (Ex: ponderacao_vertices)',
-                        required=True)
-    parser.add_argument('--extra_args', type=str,
-                        help='[Opcional] Argumentos extras, veja README.md para documentacao completa '
-                             '(Ex: extra_args=3)', required=False)
+    parser.add_argument('--format', type=str, choices=['matriz', 'lista'], required=True, help='Formato do arquivo de entrada', )
+    parser.add_argument('--file-in', type=str, required=False,
+                        help='Arquivo de entrada (Ex: data/in/teste-matriz-1.csv ou data/in/teste-lista-1.csv)')
+    parser.add_argument('--file-out', type=str, required=True, help='Arquivo de saída (Ex: data/out/criacao-arestas-output.csv)', )
+    parser.add_argument('--operation', type=str, required=True, help='Operacao a ser realizada (Ex: ponderacao_vertices)', )
+    parser.add_argument('--extra_args', type=str, required=False,
+                        help='[Opcional] Argumentos extras, veja README.md para documentacao completa (Ex: extra_args=3)')
 
     # Pega os argumentos
     args = parser.parse_args()
 
-    # Pega o conteúdo do arquivo
-    graph_info = file_processor.read(args.file, args.format)
+    graph_info = None
+
+    # Obtem conteúdo do arquivo de entrada, se informado
+    if args.file_in:
+        graph_info = file_processor.read(args.file_in, args.format)
 
     # Cria um processador de grafos
     graph_processor = GraphProcessor(args.format, graph_info)
