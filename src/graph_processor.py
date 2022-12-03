@@ -1,7 +1,8 @@
 from collections import defaultdict
 import random
 
-from graph import Grafo
+# from graph import Grafo
+import graph
 
 
 class GraphProcessor:
@@ -14,7 +15,7 @@ class GraphProcessor:
         self.input_content = input_content  # Conteúdo de entrada
         self.adj = defaultdict(set)  # Dicionário de adjacências
         if input_content is not None:  # Se o conteúdo de entrada não for nulo
-            self.grafo = Grafo(input_content)  # Cria um grafo com o conteúdo de entrada
+            self.grafo = graph.Grafo(input_content)  # Cria um grafo com o conteúdo de entrada
         else:  # Se o conteúdo de entrada for nulo
             self.grafo = None  # O grafo é nulo
 
@@ -33,16 +34,14 @@ class GraphProcessor:
                 random_number = random.randint(1, 11000)  # Gera um novo número aleatório entre 1 e 11000
                 vertices.append(random_number)  # Adiciona o novo número aos vértices
 
-        print("Vertices: ", vertices)  # Imprime os vértices
-
         # Víncula os vertices ao primeiro vertice
         arestas = []  # Lista de arestas
         for i in range(1, len(vertices)):  # Para cada vértice
             arestas.append((vertices[0], vertices[i]))  # Adiciona uma aresta entre o primeiro vértice e o vértice atual
 
         # Cria e imprime o grafo. O grafo é criado com os vértices e as arestas
-        self.grafo = Grafo(arestas, direcionado=True)  # Cria um grafo com as arestas e direcionado
-        print(self.grafo)  # Imprime o grafo
+        self.grafo = graph.Grafo(vertices, arestas, direcionado=True)  # Cria um grafo com as arestas e direcionado
+        return self.grafo  # Retorna o grafo
 
     def criacao_arestas(self, extra_args):
         print(f"Execuntando 'criacao_arestas' [extra_args={extra_args}]")
@@ -58,17 +57,17 @@ class GraphProcessor:
                 random_number = random.randint(1, 11000)  # Gera um novo número aleatório entre 1 e 11000
                 novas_arestas.append([i, random_number])  # Adiciona o novo número às novas arestas
 
-        print("Arestas Originais: ", arestas)  # Imprime as arestas originais
-        print("Arestas Novas: ", novas_arestas)  # Imprime as novas arestas
-
         self.grafo.adiciona_arestas(novas_arestas)  # Adiciona as novas arestas ao grafo
 
     def remocao_arestas(self, extra_args):
         print(f"Execuntando 'remocao_arestas' [extra_args={extra_args}]")
 
-        extra_args = extra_args.split("|")  # Separa os argumentos
+        if extra_args.find("|") != -1:  # Se o extra_args tiver um |
+            extra_args = extra_args.split("|")  # Separa os argumentos
+            print('entrou no if')
 
         for extra_arg in extra_args:  # Para cada argumento
+            print('entrou no for', extra_args)
             aux = extra_arg.split(";")  # Separa o argumento
             self.grafo.remove_arco(aux[0], aux[1])  # Remove o arco
 
@@ -76,21 +75,17 @@ class GraphProcessor:
         print(f"Execuntando 'rotulacao_vertices' [extra_args={extra_args}]")
         self.grafo.rotula_vertices(extra_args)  # Rotula os vértices
 
-    def componentes_conexas(self):
-        print(f"Execuntando 'componentes_conexas'")
-        self.grafo.componentes_conexas()  # Componentes conexas
-
-    def caminho_minimo(self, extra_args):
-        print(f"Execuntando 'caminho_minimo' [extra_args={extra_args}]")
-        self.grafo.caminho_minimo(extra_args)  # Caminho mínimo
+    def ponderacao_vertices(self):
+        print(f"Execuntando 'ponderacao_vertices'")
+        pondera = self.grafo.pondera_vertices()
 
     def ponderacao_arestas(self, extra_args):
         print(f"Execuntando 'ponderacao_arestas' [extra_args={extra_args}]")
         self.grafo.pondera_arestas(extra_args)  # Pondera as arestas
 
-    def rotulacao_vertices(self, extra_args):
-        print(f"Execuntando 'rotulacao_vertices' [extra_args={extra_args}]")
-        self.grafo.rotula_vertices(extra_args)  # Rotula os vértices
+    def componentes_conexas(self):
+        print(f"Execuntando 'componentes_conexas'")
+        self.grafo.componentes_conexas()  # Componentes conexas
 
     def rotulacao_arestas(self, extra_args):
         print(f"Execuntando 'rotulacao_arestas' [extra_args={extra_args}]")
@@ -145,6 +140,10 @@ class GraphProcessor:
             print("Grafo completo")  # Imprime que o grafo é completo
         else:  # Se o grafo não for completo
             print("Grafo não completo")  # Imprime que o grafo não é completo
+
+    def caminho_minimo(self, extra_args):
+        print(f"Execuntando 'caminho_minimo' [extra_args={extra_args}]")
+        self.grafo.caminho_minimo(extra_args)  # Caminho mínimo
 
     def naive(self):
         print(f"Execuntando 'naive'")

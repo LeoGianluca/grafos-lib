@@ -5,10 +5,11 @@ import random
 class Grafo(object):
     """ Implementação básica de um grafo. """
 
-    def __init__(self, arestas, direcionado=False):
+    def __init__(self, vertices, arestas, direcionado=False):
         """Inicializa as estruturas base do grafo."""
         self.adj = defaultdict(set)  # Dicionário de adjacências.
         self.direcionado = direcionado  # O grafo é direcionado?
+        self.adiciona_vertices(vertices)  # Adiciona os vértices.
         self.adiciona_arestas(arestas)  # Adiciona as arestas ao grafo.
         self.pesos = None  # Peso dos vértices.
         self.rotulos = None  # Rótulos dos vértices.
@@ -30,6 +31,13 @@ class Grafo(object):
         # Se o grafo for não-direcionado, adiciona as arestas (u, v) e (v, u).
         for u, v in arestas:
             self.adiciona_arco(u, v)
+
+    def adiciona_vertices(self, vertices):
+        """ Adiciona vértices ao grafo. """
+        # Para cada vértice.
+        for v in vertices:
+            # Adiciona o vértice ao grafo.
+            self.adj[v]
 
     def adiciona_arco(self, u, v):
         """ Adiciona uma ligação (arco) entre os nodos 'u' e 'v'. """

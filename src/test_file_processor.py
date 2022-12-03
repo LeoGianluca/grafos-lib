@@ -2,8 +2,8 @@ import unittest
 
 import src.file_processor as module
 
-TEST_INPUT_LISTA = '../src/data/in/teste-lista-1.csv'
-TEST_INPUT_MATRIZ = '../src/data/in/teste-matriz-1.csv'
+TEST_INPUT_LISTA = './data/in/teste-lista-1.csv'
+TEST_INPUT_MATRIZ = './data/in/teste-matriz-1.csv'
 
 
 class Testing(unittest.TestCase):
