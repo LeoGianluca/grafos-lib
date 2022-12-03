@@ -103,16 +103,27 @@ def write(file, file_type, file_content):
     print(f'Processando arquivo (arquivo={file}, tipo={file_type})')
 
     if file_type == 'matriz':  # Verifica se o tipo de arquivo é matriz
-        write_file_matrix(file, file_content)  # Chama a função write_file_matrix
+        write_file_graph_as_list(file, file_content)  # Chama a função write_file_matrix
     elif file_type == 'lista':  # Verifica se o tipo de arquivo é lista
-        write_file_list(file, file_content)  # Chama a função write_file_list
-    else:  # Caso o tipo de arquivo não seja nem matriz nem lista
-        print(f'Tipo de arquivo desconhecido [{file_type}]')  # Imprime a mensagem de erro
+        write_file_graph_as_matrix(file, file_content)  # Chama a função write_file_list
+    else:  # Caso o tipo de arquivo não seja nem matriz nem lista armazena o conteúdo do arquivo em um .txt
+        write_file_plain_text(file, file_content)  # Chama a função write_file_plain_text
 
     print('')
 
 
-def write_file_list(file, file_content):
+def write_file_plain_text(file, file_content):
+    """
+    Realiza escrita de um arquivo de texto.
+
+    :param file: arquivo a ser processado
+    :param file_content: conteudo a ser escrito no arquivo
+    """
+    with open(file, 'w') as f:
+        f.write(file_content)
+
+
+def write_file_graph_as_list(file, file_content):
     """
     Realiza escrita de um arquivo de lista de adjacencias.
 
@@ -127,7 +138,7 @@ def write_file_list(file, file_content):
                 f.write('')  # Adiciona uma quebra de linha
 
 
-def write_file_matrix(file, file_content):
+def write_file_graph_as_matrix(file, file_content):
     """
     Realiza escrita de um arquivo de matriz de adjacencias.
 
