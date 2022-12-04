@@ -82,30 +82,10 @@ class Grafo(object):
         # Inicializa o grafo completo.
         arestas = [(i, j) for i in self.get_vertices() for j in self.get_vertices()]
         # Retorna o grafo completo.
-        return Grafo(arestas, self.direcionado)
-
-    def grafo_ciclico(self):
-        """ Retorna True se o grafo for cíclico. """
-        # Inicializa a pilha de busca.
-        pilha = [self.get_vertices()[0]]
-        # Inicializa a árvore de busca em profundidade.
-        arvore = {pilha[0]: None}
-        # Enquanto a pilha não estiver vazia.
-        while pilha:
-            # Retira o primeiro elemento da pilha.
-            u = pilha.pop()
-            # Para cada vértice adjacente a 'u'.
-            for v in self.vertices_adjacentes(u):
-                # Se o vértice ainda não foi visitado.
-                if v not in arvore:
-                    # Adiciona o vértice na árvore.
-                    arvore[v] = u
-                    # Adiciona o vértice na pilha.
-                    pilha.append(v)
-                # Se o vértice já foi visitado e não é o pai de 'u'.
-                elif arvore[u] != v:
-                    return True
-        return False
+        if self.direcionado:
+            return Grafo(self.get_vertices(), arestas, direcionado=True)
+        else:
+            return Grafo(self.get_vertices(), arestas)
 
     def caminho_minimo(self, s, t):
         """ Retorna o menor caminho entre os vértices 's' e 't'. """
@@ -225,7 +205,7 @@ class Grafo(object):
                     # Adiciona o vértice adjacente ao ciclo euleriano.
                     ciclo.append(v)
                     # Remove a aresta do grafo.
-                    self.remove_aresta(ciclo[-2], ciclo[-1])
+                    self.remove_arco(self, ciclo[-2], ciclo[-1])
                     # Para o laço.
                     break
         # Retorna o ciclo euleriano.
@@ -234,15 +214,26 @@ class Grafo(object):
     def is_ponte(self, u, v):
         """ Retorna True se a aresta (u, v) é ponte. """
         # Remove a aresta do grafo.
-        self.remove_aresta(u, v)
+        self.remove_arco(u, v)
         # Se a aresta é ponte.
         if not self.eh_conexo():
             # Adiciona a aresta no grafo.
-            self.adiciona_aresta(u, v)
+            self.adiciona_arco(u, v)
             # Retorna True.
             return True
         # Adiciona a aresta no grafo.
-        self.adiciona_aresta(u, v)
+        self.adiciona_arco(u, v)
+        # Retorna False.
+        return False
+
+    def eh_conexo(self):
+        """ Retorna True se o grafo é conexo. """
+        # Inicializa a árvore de busca em largura.
+        arvore = self.busca_largura(self.get_vertices()[0])
+        # Se a árvore possui todos os vértices do grafo.
+        if len(arvore) == len(self.get_vertices()):
+            # Retorna True.
+            return True
         # Retorna False.
         return False
 
@@ -257,7 +248,7 @@ class Grafo(object):
         # Inicializa o índice.
         indice = 0
         # Para cada vértice do grafo.
-        for v in self.vertices:
+        for v in self.get_vertices():
             # Se o vértice ainda não foi visitado.
             if v not in visitados:
                 # Chama a função auxiliar.
@@ -267,6 +258,7 @@ class Grafo(object):
 
     def tarjan_aux(self, v, componentes, visitados, pilha, indice):
         """ Retorna as componentes fortemente conexas do grafo. """
+        # ERRO NO INDICE
         # Inicializa o índice do vértice.
         self.indices[v] = indice
         # Inicializa o índice mínimo do vértice.

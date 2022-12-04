@@ -106,12 +106,15 @@ class GraphProcessor:
     def checagem_existencia_arestas(self, extra_args):
         print(f"Execuntando 'checagem_existencia_arestas' [extra_args={extra_args}]")
 
-        extra_args = extra_args.split(";")  # Separa os argumentos
+        if extra_args.find("|") != -1:  # Se o extra_args tiver um |
+            extra_args = extra_args.split("|")  # Separa os argumentos
+        else:
+            extra_args = [extra_args]  # Se não tiver um |, o extra_args é uma lista com o argumento
 
-        arestas = self.grafo.existe_aresta(extra_args[0], extra_args[1])  # Pega as arestas
-
-        # Imprime se existe aresta entre os vértices
-        print(f"Aresta existentes entre {extra_args[0]} e {extra_args[1]}? {arestas}")
+        for extra_arg in extra_args:  # Para cada argumento
+            aux = extra_arg.split(";")  # Separa o argumento
+            aux = [int(i) for i in aux]  # Converte os argumentos para inteiros
+            print(f"Existe aresta entre {aux[0]} e {aux[1]}: {self.grafo.existe_aresta(aux[0], aux[1])}")
 
     def checagem_quantidade_vertices(self):
         print(f"Execuntando 'checagem_quantidade_vertices'")
@@ -127,9 +130,9 @@ class GraphProcessor:
         print(f"Execuntando 'checagem_grafo_vazio'")
 
         if not self.grafo.get_arestas():  # Se não houver arestas
-            print("Grafo vazio")  # Imprime que o grafo está vazio
+            return True  # Imprime que o grafo está vazio
         else:  # Se houver arestas
-            print("Grafo não vazio")  # Imprime que o grafo não está vazio
+            return False  # Imprime que o grafo não está vazio
 
     def checagem_grafo_completo(self):
         print(f"Execuntando 'checagem_grafo_completo'")
@@ -139,18 +142,13 @@ class GraphProcessor:
         else:  # Se o grafo não for completo
             print("Grafo não completo")  # Imprime que o grafo não é completo
 
-    def caminho_minimo(self, extra_args):
-        print(f"Execuntando 'caminho_minimo' [extra_args={extra_args}]")
-        self.grafo.caminho_minimo(extra_args)  # Caminho mínimo
+    def naive(self, extra_args):
+        print(f"Execuntando 'naive' [extra_args={extra_args}]")
+        self.grafo.naive_profundidade(extra_args)  # Executa o algoritmo naive
 
-    def naive(self):
-        print(f"Execuntando 'naive'")
-
-        self.grafo.naive()  # Executa o algoritmo naive
-
-    def fleury(self):
-        print(f"Execuntando 'fleury'")
-        self.grafo.fleury()  # Executa o Algoritmo de
+    def fleury(self, extra_args):
+        print(f"Execuntando 'fleury' [extra_args={extra_args}]")
+        self.grafo.fleury(extra_args)  # Executa o Algoritmo de
 
     def tarjan(self):
         print(f"Execuntando 'tarjan'")
