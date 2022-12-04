@@ -12,7 +12,7 @@ class Grafo(object):
         self.adiciona_vertices(vertices)  # Adiciona os vértices.
         self.adiciona_arestas(arestas)  # Adiciona as arestas ao grafo.
         self.pesos = None  # Peso dos vértices.
-        self.rotulos = None  # Rótulos dos vértices.
+        self.rotulos = {}  # Rótulos dos vértices.
 
     def get_vertices(self):
         """ Retorna a lista de vértices do grafo. """
@@ -23,6 +23,11 @@ class Grafo(object):
         """ Retorna a lista de arestas do grafo. """
         # Retorna a lista de arestas.
         return [(k, v) for k in self.adj.keys() for v in self.adj[k]]
+
+    def get_rotulo(self):
+        """ Retorna o rótulo do vértice 'v'. """
+        # Retorna o rótulo do vértice.
+        return self.rotulos
 
     def adiciona_arestas(self, arestas):
         """ Adiciona arestas ao grafo. """
@@ -118,37 +123,6 @@ class Grafo(object):
         # Retorna o caminho mínimo.
         return caminho[::-1]
 
-    def componentes_conexas(self):
-        """ Retorna as componentes conexas do grafo. """
-        # Inicializa a pilha de busca.
-        pilha = []
-        # Inicializa a lista de componentes conexas.
-        componentes = []
-        # Para cada vértice do grafo.
-        for v in self.get_vertices():
-            # Se o vértice ainda não foi visitado.
-            if v not in pilha:
-                # Inicializa a componente conexa.
-                componente = []
-                # Adiciona o vértice na pilha.
-                pilha.append(v)
-                # Enquanto a pilha não estiver vazia.
-                while pilha:
-                    # Retira o primeiro elemento da pilha.
-                    u = pilha.pop()
-                    # Adiciona o vértice na componente conexa.
-                    componente.append(u)
-                    # Para cada vértice adjacente a 'u'.
-                    for w in self.vertices_adjacentes(u):
-                        # Se o vértice ainda não foi visitado.
-                        if w not in pilha:
-                            # Adiciona o vértice na pilha.
-                            pilha.append(w)
-                # Adiciona a componente conexa na lista de componentes conexas.
-                componentes.append(componente)
-        # Retorna a lista de componentes conexas.
-        return componentes
-
     def pondera_vertices(self, pesos):
         """ Pondera os vértices do grafo. """
         # Inicializa o dicionário de pesos.
@@ -158,14 +132,16 @@ class Grafo(object):
             # Adiciona o peso do vértice.
             self.pesos[v] = pesos[v]
 
-    def rotula_vertices(self, rotulos):
-        """ Rotula os vértices do grafo. """
-        # Inicializa o dicionário de rótulos.
+    def set_rotulos(self, rotulos):
+        """ Define os rótulos dos vértices do grafo. """
+        # recebe os vertices
+        vertices = self.get_vertices()
+        # cria um dicionario de rotulos
         self.rotulos = {}
-        # Para cada vértice do grafo.
-        for v in self.get_vertices():
-            # Adiciona o rótulo do vértice.
-            self.rotulos[v] = rotulos[v]
+        # para cada vertice
+        for i in range(len(vertices)):
+            # adiciona o rotulo
+            self.rotulos[vertices[i]] = rotulos[i]
 
     def rotula_arestas(self, rotulos):
         """ Rotula as arestas do grafo. """

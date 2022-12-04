@@ -62,28 +62,28 @@ class GraphProcessor:
 
         if extra_args.find("|") != -1:  # Se o extra_args tiver um |
             extra_args = extra_args.split("|")  # Separa os argumentos
-            print('entrou no if')
+        else:
+            extra_args = [extra_args]  # Se não tiver um |, o extra_args é uma lista com o argumento
 
         for extra_arg in extra_args:  # Para cada argumento
-            print('entrou no for', extra_args)
             aux = extra_arg.split(";")  # Separa o argumento
+            aux = [int(i) for i in aux]  # Converte os argumentos para inteiros
             self.grafo.remove_arco(aux[0], aux[1])  # Remove o arco
 
     def rotulacao_vertices(self, extra_args):
         print(f"Execuntando 'rotulacao_vertices' [extra_args={extra_args}]")
-        self.grafo.rotula_vertices(extra_args)  # Rotula os vértices
+        # TODO: Implementar rotulacao_vertices (ERROR)
+        # cria um dicionário com os vértices e seus rótulos
+        self.grafo.rotulos = extra_args
+        print(self.grafo.get_rotulo())
 
     def ponderacao_vertices(self):
         print(f"Execuntando 'ponderacao_vertices'")
-        pondera = self.grafo.pondera_vertices()
+        self.grafo.pondera_vertices()
 
     def ponderacao_arestas(self, extra_args):
         print(f"Execuntando 'ponderacao_arestas' [extra_args={extra_args}]")
         self.grafo.pondera_arestas(extra_args)  # Pondera as arestas
-
-    def componentes_conexas(self):
-        print(f"Execuntando 'componentes_conexas'")
-        self.grafo.componentes_conexas()  # Componentes conexas
 
     def rotulacao_arestas(self, extra_args):
         print(f"Execuntando 'rotulacao_arestas' [extra_args={extra_args}]")
@@ -110,8 +110,8 @@ class GraphProcessor:
 
         arestas = self.grafo.existe_aresta(extra_args[0], extra_args[1])  # Pega as arestas
 
-        print(
-            f"Existe aresta entre {extra_args[0]} e {extra_args[1]}? {arestas}")  # Imprime se existe aresta entre os vértices
+        # Imprime se existe aresta entre os vértices
+        print(f"Aresta existentes entre {extra_args[0]} e {extra_args[1]}? {arestas}")
 
     def checagem_quantidade_vertices(self):
         print(f"Execuntando 'checagem_quantidade_vertices'")

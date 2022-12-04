@@ -1,4 +1,5 @@
 import unittest
+import argparse
 
 import graph_processor as module
 
@@ -16,19 +17,56 @@ class TestGraphProcessor(unittest.TestCase):
         self.assertEqual(len(grafo.get_arestas()), 11)
 
     def test_remocao_arestas(self):
-        arestas = 8
         grafo = module.GraphProcessor.criacao_grafo_x_vertices(self, 4)
+        arestas = grafo.get_arestas()[0]
 
-        arestas_remover = grafo.get_arestas()[0]
-        arestas_remover = str(arestas_remover).replace(' ', '')
-        arestas_remover = str(arestas_remover).replace(',', ';')
-        arestas_remover = str(arestas_remover).replace('(', '')
-        arestas_remover = str(arestas_remover).replace(')', '')
+        aresta_a = arestas[0]
+        aresta_b = arestas[1]
+        join_arestas = "%s;%s" % (aresta_a, aresta_b)
 
-        print(arestas_remover)
-        # module.GraphProcessor.remocao_arestas(self, arestas_remover)
-        module.GraphProcessor.remocao_arestas(self, '(12;13)')
-        # self.assertEqual(len(grafo.get_arestas()), 1)
+        module.GraphProcessor.remocao_arestas(self, join_arestas)
+
+    def test_rotulacao_vertices(self):
+        pass
+
+    def test_ponderacao_vertices(self):
+        pass
+
+    def test_ponderacao_arestas(self):
+        pass
+
+    def test_rotulacao_arestas(self):
+        pass
+
+    def test_checagem_adjacencia_vertices(self):
+        pass
+
+    def test_checagem_adjacencia_arestas(self):
+        pass
+
+    def test_checagem_existencia_arestas(self):
+        pass
+
+    def test_checagem_quantidade_vertices(self):
+        pass
+
+    def test_checagem_quantidade_arestas(self):
+        pass
+
+    def test_checagem_grafo_vazio(self):
+        pass
+
+    def test_checagem_grafo_completo(self):
+        pass
+
+    def test_naive(self):
+        pass
+
+    def test_fleury(self):
+        pass
+
+    def test_tarjan(self):
+        pass
 
 
 if __name__ == '__main__':
