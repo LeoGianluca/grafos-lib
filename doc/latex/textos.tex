@@ -1,11 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%% Template de Artigo Adaptado para Trabalho de Diplomação do ICEI %%%%%%%%%%%%%%%%%%%%%%%%
-%% codificação UTF-8 - Abntex - Latex -  							     %%
-%% Autor:    Fábio Leandro Rodrigues Cordeiro  (fabioleandro@pucminas.br)                            %% 
-%% Co-autores: Prof. João Paulo Domingos Silva, Harison da Silva e Anderson Carvalho		     %%
-%% Revisores normas NBR (Padrão PUC Minas): Helenice Rego Cunha e Prof. Theldo Cruz                  %%
-%% Versão: 1.1     18 de dezembro 2015                                                               %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{\esp Introdução}
 
 No início do século XVIII, especula-se que, na cidade russa de Königsberg, eram constituídas quatro áreas, as quais eram separadas pelo Rio Pregel. No entanto, o deslocamento dos cidadãos era complexo devido a utilização de barcos para tal. Assim sendo, foram construídas sete pontes conforme ilustrado na figura 1, para auxiliar na locomoção destes entre as ilhas e suas margens. Contudo, o trajeto ainda se tornava árduo e tais pessoas da época começaram a se questionar se era possível cruzar as pontes apenas uma vez e, se possível, retornar ao ponto inicial.
@@ -56,7 +48,7 @@ Como toda teoria matemática, a Teoria dos Grafos contém diversas nomenclaturas
 
 \subsection{\esp Estruturas de um Grafo}
 
-Grafo é uma representação abstrata de um conjunto de objetos e das relações existentes entre eles. Podendo ser descrito como um par de G(V, A) onde V é um conjunto não vazio de objetos denominados vértices e A é um conjunto de pares não ordenados de V, chamado arestas. Por exemplo, no grafo apresentado na figura 3 é apresentado um mapa de estradas e cidades.
+Grafo é uma representação abstrata de um conjunto de objetos e das relações existentes entre eles. Podendo ser descrito como um par de G (V,A) onde V é um conjunto não vazio de objetos denominados vértices e A é um conjunto de pares não ordenados de V, chamado arestas. Por exemplo, no grafo apresentado na figura 3 é apresentado um mapa de estradas e cidades.
 
 \begin{figure}[ht]
 	\centering	
@@ -106,204 +98,226 @@ Grafos ponderados, possuem atribuição de pesos em suas arestas. São utilizado
 	\label{fig:figura1}
 \end{figure}
 
+\subsection{\esp Representações}
+
+Existem diversas maneiras de se representar grafos, cada uma com suas vantagens e desvantagens. Em algumas situações ou algoritmos nos quais pode-se utilizar de um grafo como entrada é necessário escolher uma representação específica. Neste estudo será utilizada a Lista de Adjacência e Matriz de Adjacência.
+Para tal escolha pode-se utilizar de três critérios, sendo eles:
+
+\begin{enumerate} 
+ \item [a)] Quantidade de memória ou espaço gasto;
+ \item [b)] Tempo gasto para determinar se um determinada aresta faz parte do grafo;
+ \item [c)] Tempo gasto para encontrar os vizinhos de um vértice.
+\end{enumerate}
+
+A identificação dos vértices comumente não é feita pelo nome (como "Leonardo", "Belo Horizonte" ou "calça"), mas sim por um número. Ou seja, os vértices são numerados |V| de 0 até |V| -1. Um exemplo de grafo é uma rede social, no qual as pessoas estão interligadas por seus nomes de usuário, mas para a representação do grafo, deve-se trocar os nomes das ligações por números. O grafo abaixo representa essa interação com seus 10 vértices identificados por números e não por nomes:
+
+\begin{figure}[ht]
+	\centering	
+	\caption[\hspace{0.1cm}Grafo de uma rede social.]{Grafo de uma rede social}
+	\vspace{-0.4cm}
+	\includegraphics[width=0.5\textwidth]{figuras/grafo-rede-social.png}
+	 \vspace{-0.2cm}
+	\\\textbf{\footnotesize Fonte: Khan Academy}
+	\label{fig:figura1}
+\end{figure}
+
+\subsubsection{\esp Matriz de Adjacência}
+
+A matriz de adjacência é uma matriz quadrada usada para representar um grafo finito de  N x N onde N é o número de vértices do grafo que inicialmente é preenchida com 0, mas quando houver uma relação entre o vértice I com o vértice J, essa ligação é marcada com 1. Assim sendo, dado um grafo G com N vértices, pode-se representá-lo em uma matriz A(G)=[aij].
+A definição precisa das entradas da matriz varia de acordo com as propriedades do grafo que se deseja representar, porém de forma geral o valor Aij guarda informações sobre como os vértices Vi e Vj estão relacionados. 
+
+Elementos diagonais da matriz são nulos, uma vez que as arestas de um vértice que apontam para si mesmo não são permitidas em grafos simples. O mesmo conceito pode ser aplicado para multigrafos e grafos com loops em que se é armazenado o número de arestas entre cada dois vértices no elemento da matriz correspondente e permitindo elementos diagonais diferentes de zero. Os loops podem ser contados uma vez (como uma única aresta) ou duas vezes (como duas incidências de vértice-aresta), desde que uma convenção consistente seja seguida. Os grafos não direcionados geralmente usam a última convenção de contar loops duas vezes, enquanto os grafos direcionados geralmente usam a primeira convenção.
+
+A transformação do grafo apresentado na figura 7 em sua representação de matriz ficaria da seguinte maneira:
+
+\begin{figure}[ht]
+	\centering	
+	\caption[\hspace{0.1cm}Matriz de adjacência de uma rede social.]{Matriz de adjacência de uma rede social}
+	\vspace{-0.4cm}
+	\includegraphics[width=0.5\textwidth]{figuras/matriz-adjacencia.png}
+	 \vspace{-0.2cm}
+	\\\textbf{\footnotesize Fonte: Khan Academy}
+	\label{fig:figura1}
+\end{figure}
+
+\subsubsection{\esp Lista de Adjacência}
+
+A lista de adjacência é algo bem comum na programação, onde se tem uma coleção de listas não ordenadas usadas para representar um grafo finito. Cada lista não ordenada dentro de uma lista de adjacência descreve o conjunto de vizinhos de um determinado vértice no grafo. Geralmente é representada com uma matriz, porque cada vértice vai precisar de um vetor diferente. Tendo em vista que não é possível ser duas vezes “amigo” de ninguém.
+
+Uma implementação sugerida por Guido van Rossum usa uma tabela hash para associar cada vértice em um grafo com uma matriz de vértices adjacentes. Nesta representação, um vértice pode ser representado por qualquer objeto hashable. Não há representação explícita de arestas como objetos.
+
+\begin{figure}[ht]
+	\centering	
+	\caption[\hspace{0.1cm}Lista de adjacência de uma rede social.]{Lista de adjacência de uma rede social}
+	\vspace{-0.4cm}
+	\includegraphics[width=0.4\textwidth]{figuras/lista-adjacencia.png}
+	 \vspace{-0.2cm}
+	\\\textbf{\footnotesize Fonte: Khan Academy}
+	\label{fig:figura1}
+\end{figure}
+
+\section{\esp Algoritmos}
+
+Um algoritmo é uma sequência de raciocínios, instruções ou operações para alcançar um objetivo, sendo necessário que os passos sejam finitos e operados sistematicamente. Um algoritmo, portanto, conta com a entrada (input) e saída (output) de informações mediadas pelas instruções.
+
+\subsection{\esp Percurso em Grafos}
+
+Um algoritmo de busca é qualquer algoritmo que visita todos os vértices de um grafo andando pelos arcos de um vértice a outro. Há muitas maneiras de fazer uma tal busca. Cada algoritmo de busca é caracterizado pela ordem em que visita os vértices.
+
+\subsubsection{\esp Percurso em Profundidade (DFS - Depth First Search)}
+
+Esta busca tem como intenção auxiliar na compreensão do grafo com que se está lidando, revelando sua forma e reunindo informações (representadas pela numeração dos vértices) que ajudam a responder perguntas sobre um determinado grafo.
+
+Como característica principal este algoritmo visita todos vértices de um grafo, utilizando como critério os vizinhos mais recentemente visitados, utilizando de uma pilha explícita ou recursividade para guiar a busca.
+
+Entretanto, o percurso em profundidade não resolve um problema específico. Apenas  serve como um arcabouço, ou pré-processamento, para a resolução eficiente de vários problemas concretos. Abaixo segue um exemplo de seu algoritmo:
+
+\begin{figure}[ht]
+	\centering	
+	\caption[\hspace{0.1cm}Algoritmo DFS.]{Algoritmo DFS}
+	\vspace{-0.4cm}
+	\includegraphics[width=0.7\textwidth]{figuras/dfs.png}
+	 \vspace{-0.2cm}
+	\\\textbf{\footnotesize Fonte:  Bondy, J. (1976)}
+	\label{fig:figura1}
+\end{figure}
+
+Para cada vértice do grafo, a busca percorre todos os seus vizinhos. Assim sendo, cada aresta é visitada duas vezes.
+O grafo sendo representado por uma lista de adjacências, o percurso tem
+complexidade \emph{O(n + m)}.
+
+\subsubsection{\esp Percurso em Largura (BFS - Breadth First Search)}
+
+A busca em largura é bastante simples, pois os vértices do grafo são visitados nível a nível, ou seja, todos os vértices a uma distância k do vértice inicial são visitados antes de qualquer vértice a uma distância k + 1 do inicial.
+
+A busca em largura produz uma árvore com raíz S e que possui todos os vértices acessíveis. Conceitualmente, ao invés de gerar uma árvore apenas, poderia gerar várias árvores, no caso de haverem mais de uma origem, mas como geralmente a busca em largura é utilizada em aplicações que calculam caminho mais curto entre dois pontos, isso não é muito comum. CORMEM et al. (2002, p. 422)
+
+Abaixo segue um exemplo de seu algoritmo:
+
+\begin{figure}[ht]
+	\centering	
+	\caption[\hspace{0.1cm}Algoritmo BFS.]{Algoritmo BFS}
+	\vspace{-0.4cm}
+	\includegraphics[width=0.7\textwidth]{figuras/bfs.png}
+	 \vspace{-0.2cm}
+	\\\textbf{\footnotesize Fonte:  Bondy, J. (1976)}
+	\label{fig:figura1}
+\end{figure}
+
+\vspace{2cm}
+\subsection{\esp Tarjan}
+
+O algoritmo de Tarjan torna possível determinar os componentes fortemente conectados de um grafo direcionado. O algoritmo de Tarjan é linear em complexidade, como o algoritmo de Kosaraju, mas tem a vantagem de fazer apenas uma passagem no grafo em vez de duas. 
+Desta forma, recebe como entrada um grafo direcionado e retorna uma partição dos vértices do gráfico correspondentes aos seus componentes fortemente conectados. 
+O princípio do algoritmo é o seguinte: lançamos uma rota em profundidade a partir de um vértice arbitrário. As tuplas exploradas são colocadas sobre uma pilha P. Uma marcação específica permite distinguir certos vértices: as raízes de componentes fortemente conectados, ou seja, os primeiros vértices explorados de cada componente (essas raízes dependem da ordem em que o percurso é feito, não estão absolutamente fixadas no grafo). Quando terminamos de explorar um vértice raiz v, removemos todos os vértices até e incluindo v da pilha. O conjunto de vértices removidos forma um componente fortemente conectado do gráfico. Se ainda houver picos não alcançados no final da rota, recomeçamos a partir de um deles.
+
+\subsection{\esp Fleury}
+
+O algoritmo de Fleury é utilizado para a construção ou identificação de um ciclo euleriano em um grafo euleriano. Um caminho ou um circuito é dito euleriano se ele contém todas as arestas de um grafo. Um grafo que contém um circuito euleriano é um grafo euleriano. Um grafo que não contém um circuito euleriano mas contém um caminho euleriano será chamado grafo semi-euleriano.
+
+Entretanto, a dificuldade em verificar se uma rede é Euleriana reside no grande número de sub-redes possíveis.
+
+O grafo deve ter 0 ou 2 vértices ímpares. Um vértice ímpar é aquele em que o número de arestas que conectam o vértice a outros vértices é ímpar. Caso exista 2 vértices ímpares, teremos um caminho euleriano. Se o grafo possuir 0 vértices ímpares, tem-se um circuito euleriano. 
+
+Se possuir 2 vértices ímpares, começa-se em um desses dois vértices. Caso tenha 0 vértices ímpares, pode-se começar em qualquer lugar.
+
+Para encontrar o caminho, escolhe-se a borda que não é uma ponte. Uma ponte pode ser comparada a uma ponte do mundo real que conecta uma ilha ao continente. Portanto, uma ponte em um grafo é uma aresta que conecta uma parte do grafo ao resto. Então, se está em um vértice onde uma aresta é uma ponte e a outra não, escolhe-se aquela que não é uma ponte.
+
 
 \section{\esp Desenvolvimento}
 
-Todo título de seção ou subseção deverá ser seguido de texto.
-Para as seções textuais utilizar numeração progressiva em algarismos arábicos, limitada até a seção quinária 
-(NBR 6024/2003) da ABNT. Devem ser diferenciadas utilizando os recursos gráficos abaixo \cite{manualpuc}.
-Os títulos das seções primárias devem ser em caixa alta, negrito, tamanho 12.
-
-\subsection{\esp Seção secundária}
-
-Os títulos das seções secundárias terão caixa baixa, negrito, tamanho 12.
-
-\subsubsection{\esp Seção terciária}
-
-Caixa baixa, itálico, negrito, tamanho 12.
-
-\subsubsubsection{\esp Seção quartenária}
- 
- Caixa baixa, sublinhado, negrito, tamanho 12.
- 
- \subsubsubsubsection{\esp Seção quinária}
- 
- Nas seções quinárias, deve ser usado caixa baixa, sem negrito, tamanho 12.
-
-\section{\esp Elementos flutuantes}
-
-Elementos inseridos no texto como imagens, tabelas, algoritmos etc.
-Recomenda-se a colocação das ilustrações de forma centralizada, dentro das margens. 
-Caso não seja possível, em \citeonline{manualpuc} recomenda-se utilizar recursos como: 
- a) utilizar letras com tamanho menor ao padrão do texto; a) imprimir a ilustração no sentido vertical; 
- c) imprimir em folha A3 ou superior e dobrá-la até atingir o tamanho da folha A4. 
-
-Nas normas da PUC é afirmado a necessidade de se observar que todos os elementos flutuantes inseridos devem ter a formatação básica:
+O projeto foi desenvolvido na linguagem de programação Python em sua versão 3.10.8 como uma biblioteca de manipulação de grafos. A biblioteca conta com as seguintes funcionalidades:
 
 \begin{enumerate} 
- \item [a)] Título centralizado localizado na parte superior; 
- \item [a)] Fonte em tamanho 10 na parte inferior;
- \item [c)] Devem ser inseridas o mais próximos do texto que as referenciam.
+\item [a)]Criação de um grafo com X vértices;
+\item [b)]Criação e remoção de arestas;
+\item [c)]Ponderação e rotulação de vértices e arestas;
+\item [d)]Checagem de adjacência de entre vértices e entre arestas;
+\item [e)]Checagem da existência de arestas;
+\item [f)]Checagem da quantidade de vértices e arestas;
+\item [g)]Checagem de grafo vazio e completo;
+\item [h)]Busca em largura e profundidade;
+\item [i)]Algoritmo de Fleury;
+\item [j)]Algoritmo de Tarjan;
+\item [k)] Algoritmo para leitura e escrita de arquivo.
 \end{enumerate}
 
+Estes métodos possuem as duas representações citadas nas seções anteriores (Matriz de Adjacência e Lista de Adjacência), com opção de leitura e escrita em um arquivo \emph{.csv} para armazenamento e processamento dos dados. Além desta extensão de arquivo poder ser utilizada na ferramenta software de código aberto e gratuito para visualização, análise e manipulação de redes e grafos \emph{Gephi}.
 
-\subsection{\esp Inserções de ilustrações}
+O artefato desenvolvido conta com testes unitários para verificação dos métodos implementados e sua coesão em relação a regra que deve obedecer.
 
-As ilustrações devem ser inseridas seguindo o exemplo da Figura \ref{fig:figura1}. 
-% Figura
+A arquitetura do projeto foi desenhada da seguinte forma:
+
 \begin{figure}[ht]
 	\centering	
-	\caption[\hspace{0.1cm}Grade Computacional.]{Uma Grade Computacional como fonte transparente}
+	\caption[\hspace{0.1cm}Arquitetura do projeto.]{Arquitetura do projeto}
 	\vspace{-0.4cm}
-	\includegraphics[width=0.6\textwidth]{figuras/grade-comp.png}
-	% Caption centralizada
-% 	\captionsetup{justification=centering}
-	% Caption e fonte 
+	\includegraphics[width=0.4\textwidth]{figuras/organizacao-projeto.png}
 	 \vspace{-0.2cm}
-	\\\textbf{\footnotesize Fonte: \citeonline{cap-livro} }
+	\\\textbf{\footnotesize Fonte: Desenvolvido pelo autor}
 	\label{fig:figura1}
 \end{figure}
-\vspace{-0.5cm}
+\vspace{2cm}
 
-\subsection{\esp Inserção de tela de software}
-
-Nos casos de telas de \textit{software}, devem ser inseridas como figuras, e referenciadas no texto
-como na Figura \ref{fig:tela1}. Além disso, é necessário que seja citada no texto a empresa desenvolvedora. 
-
-% Figura
-\begin{figure}[!ht]
-	\centering	
-	\caption[\hspace{0.1cm}Exemplo de tela de software.]{Exemplo de tela de software}
-	  \vspace{-0.4cm}
-	\includegraphics[width=.8\textwidth]{figuras/tela1.png}
-	% Caption centralizada
-% 	\captionsetup{justification=centering}
-	% Caption e fonte
-	 \vspace{-0.3cm}
-	\\\textbf{\footnotesize Fonte: \citeonline{tela1}}
-	\label{fig:tela1}
-\end{figure}
-
-%Utilize o \newpage no caso de quando a figura ficar sobreposta por um texto, como é o caso que acontece na figura anterior
-%Retire o \newpage para verificar esse exemplo
-\newpage
-%-------------------------------------------------------------------------------------------------------------------------
-
-\subsection{\esp Inserção de gráficos e mapas}
-
-O gráfico é um tipo de ilustração que deve conter todos os elementos citados e também a descrição de seu título
-diferenciando-o das figuras da mesma forma que no Gráfico 1. 
-
-\begin{center}
-	\centering	
- 	\textbf{Gráfico 1 - Exemplo de um gráfico} \\
-%  	  \vspace{0.cm}
-	\includegraphics[width=0.7\textwidth]{figuras/access.png}
-	% Caption centralizada
-% 	\captionsetup{justification=centering}
-	% Caption e fonte
-	 \vspace{-0.3cm}
-	\\\textbf{\footnotesize Fonte: \citeonline{tese}}
-	\label{grafico1}
-\end{center}
-
-A mesma regra se aplica para mapas, que devem ser adicionados seguindo as regras de apresentação já mostradas. No caso específico,
-o título e a numeração, também como os gráficos, devem começar do numeral ``1'' depois da marcação ``Mapa'' seguido do nome do elemento.
-Exemplo: \textbf{Mapa 1 - Exemplo de um Mapa}.
-
- \subsection{\esp Tabelas}
-
-As tabelas devem ser abertas nas laterais, com espaços verticais separando
-as colunas e sem espaços horizontais, exceto na
-separação do cabeçalho. Um exemplo é a Tabela \ref{tab:tabela1}. 
-
-% Tabela
-\begin{table}[htb]
-	\centering
-	\caption{\hspace{0.1cm} Exemplo de uma tabela}
-	\vspace{-0.3cm} % espaço entre titulo e tabela
-	\label{tab:tabela1}
-	% Conteúdo da tabela
-	\begin{tabular}{l|c|c}
-  \hline
-    \textbf{Imagem}	& \textbf{transferência} & \textbf{tempo} \\
-    \hline
-     estação 1	& 7,72 MB/s &  1:22:18 \\
-     estação 2	& 7,72 MB/s &  1:22:17 \\
-     estação 3	& 7,59 MB/s & 1:24:25 \\
-     estação 4  & 7,53 MB/s & 1:43:27 \\
-     estação 5	& 6,14 MB/s  &  1:24:41 \\
-     estação 6  &  7,50 MB/s & 1:23:53 \\
-     estação 7  & 7,58 MB/s  &  1:24:02 \\
-     estação 8  & 7,8 MB/s  &  1:29:06 \\
-     estação 9  & 7,9 MB/s  &  1:30:05 \\
-     estação 10 & 8,0 MB/s  &  1:32:03 \\
-     \hline
- \end{tabular}
- 	\vspace{.1cm}  %espaço entre tabela e fonte
-	\small
-	% Fonte
-	{\footnotesize\\ \textbf{Fonte: \citeonline{monog-fabio}}}
-\end{table}
-   
-
-\subsection{\esp Inserção de algoritmos}
-
-Para inserir um algoritmo, utilizar o exemplo do Algoritmo  \ref{alg:rnagenerica}.
-Todos os algoritmos devem ser inseridos como figura, indicada por nome e  fonte. Caso 
-forem de própria autoria, isso deverá ser mencionado na fonte, como elaboração feita pelos autores.
-
-% algoritmo
-% \begin{figure}[ht]
-\begin{center}	
-	% Arquivo da figura
-% 	\caption[\hspace{0.1cm} Texto da figuras.]{Algorítmo CAC RD Neural}
-         \textbf{Algoritmo 1 -  CAC RD Neural}
-	\vspace{-0.3cm}
-\begin{minipage}[ht]{13cm}
-\begin{algorithm}[H]
-  \footnotesize
-  \caption{CAC-RD Neural}
-  \label{alg:rnagenerica}
-  \begin{algorithmic}[1]
-      \STATE \textbf{Entrada:} Requisição da chamada
-    \STATE \textbf{Saída:} Aceitação ou bloqueio da solicitação
-    
-    \STATE Preenche o vetor de $attributes.size+1$ atributos com os valores dos atributos, sendo a primeira posição do vetor preenchida com o valor 1
-		\STATE $hidden\_layer\_size =  attributes.size*2+1;$
-
-    \FOR{$i$ = 1 to $attributes.size+1$}
-    	\STATE \textbf{normalizar}($Entrada_i$)
-    \ENDFOR
-
-		\STATE $double [] net = new double [hidden\_layer\_size];$
-    \STATE $net = hidden\_layer\_weights * attributes;$
-   	\FOR{$i$ = 0 to hidden\_layer\_size}
-			\STATE $net [i] = 1.0 / (1.0 + exp((-1.0)*net[i]));$
-		\ENDFOR
-
-		\STATE $double [] ipVector = new double [hidden\_layer\_size+1];$
-    \STATE $ipVector [0] = 1.0;$
-   	\FOR{$i$ = 1 to $hidden\_layer\_size+1$}
-			\STATE $ipVector [i] = net [i-1];$
-		\ENDFOR
-		
-		\STATE $output = output\_layer\_weights *  ipVector;$
-    \STATE output = \textbf{desnormalizar}(Saída)
-    \STATE \textbf{net\_update} (requisition);
-    
-    \STATE \textbf{Retorna} output; FIM
-  \end{algorithmic}
-\end{algorithm}
-% \vspace{-0.3cm} % espaço entre algoritmo e fonte
-
-\small \centering \textbf{\footnotesize Fonte: \citeonline{mestrado}.}
-\end{minipage}
-\end{center}
-% \end{figure}
+Em relação a funcionalidade da aplicação no arquivo \emph{main.py} encontra-se as inserções que devem ser realizadas via linha de comando (CLI - Command line interface) para executar as ações desejadas. Como no exemplo abaixo:
 
 
-\subsection{\esp Conclusão}
+\begin{lstlisting}
+    python main.py 
+       --format=matriz 
+       --file-in=data/in/teste-matriz-1.csv 
+       --file-out=data/out/criacao-arestas-output.csv 
+       --operation=criacao_arestas 
+       --extra_args=2
+\end{lstlisting}
+
+Neste ponto as inserções passam pela função \texttt{main()} na qual se faz a análise (parse) dos dados de entrada com base na representação requerida através do argumento \texttt{format}. 
+
+O argumento \texttt{operation} cuida da nomenclatura do método que será chamado na execução do sistema, onde através de uma condicional é verificado se o método existe em um mapa que também define se a função recebe ou não os parâmetros de entrada através do argumento \texttt{extra-args}.
+
+Outros argumentos desta chamada são \texttt{file-out} e \texttt{file-in} que salvam o arquivo de entrada e saída da manipulação de um gravo.
+
+Passado deste ponto a operação de entrada sendo localizada o arquivo \emph{graph-processor.py} gerencia parte das regras para atender a solicitação, inicializando em seu construtor o formato de entrada, o conteúdo de entrada e se possui ou não um arquivo de entrada para manipulação das informações.
+
+\subsection{\esp Criação de um grafo com X vértices}
+
+O trecho de código abaixo apresenta a criação de um grafo com base no argumento passado.
+
+Criando uma lista com os vértices gerados de forma aleatória com número inteiros entre 1 e 11.000 para evitar que se tenha um vértice igual. Caso durante a geração um vértice igual ao existente seja criado, é gerado um novo número.
+
+Para completar a execução os vértices e arestas são enviados para o arquivo \emph{graph.py} para criação de um objeto Grafo a ser manipulado.
+
+\begin{minted}{python}
+def criacao_grafo_x_vertices(self, extra_args):
+    vertices = []  # Lista de vértices
+    # Para cada vértice
+    for i in range(0, int(extra_args)):
+        # Gera um número aleatório entre 1 e 11000
+        random_number = random.randint(1, 11000)
+        # Se o número não estiver nos vértices
+        if random_number not in vertices:
+            # Adiciona o número aos vértices
+            vertices.append(random_number)
+        # Se o número estiver nos vértices
+        else:
+            # Gera um novo número aleatório entre 1 e 11000
+            random_number = random.randint(1, 11000)
+            # Adiciona o novo número aos vértices
+            vertices.append(random_number)
+
+    # Víncula os vertices ao primeiro vertice
+    arestas = []  # Lista de arestas
+    # Para cada vértice
+    for i in range(1, len(vertices)):
+        # Adiciona uma aresta entre os vértices
+        arestas.append((vertices[0], vertices[i]))
+
+    # Cria um grafo com as arestas e direcionado
+    self.grafo = graph.Grafo(vertices, arestas, direcionado=True)  
+    return self.grafo  # Retorna o grafo
+\end{minted}
+
+\section{\esp Conclusão}
 
 Discussão dos resultados obtidos na pesquisa. É onde se colocam as observações do autor. 
 Poderá também apresentar sugestões de novas linhas de estudo.
