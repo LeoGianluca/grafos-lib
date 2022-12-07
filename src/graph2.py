@@ -13,12 +13,20 @@ class Vertex(object):
         self.children_vertex = children_vertex
         self.children_edges = children_edges
 
-    def add_edge(self, edge):
-        # self.children_edges
-        pass
+    def add_edge(self, first, second, value):
+        """ Adiciona uma aresta ao grafo. """
+
+        e = Edge(first, second, value)
+        print(e)
+
+        self.vertex_list[first].children_vertex.append(second)
+        self.vertex_list[first].children_edges.append(e)
+
+        self.vertex_list[second].children_vertex.append(first)
+        self.vertex_list[second].children_edges.append(e)
 
     def __repr__(self):
-        return f"{type(self).__name__}({self.id}, {self.label}, {self.parent}, {self.children_vertex}, , {self.children_edges})"
+        return f"{type(self).__name__}({self.id}, {self.label}, {self.parent}, {self.children_vertex}, {self.children_edges})"
 
 
 class Edge(object):
@@ -44,8 +52,7 @@ class GraphV2(object):
     vertex_counter = 0
 
     def __init__(self, matriz_adj):
-        self.root_vertex = None
-        self.vertex_list = None
+        self.root_vertex_list = None
 
         self.add_vertex(matriz_adj)  # Adiciona os vértices.
 
@@ -60,10 +67,10 @@ class GraphV2(object):
 
             v1.add_edge(e1)
 
-            if self.vertex_counter == 0:
+            if self.v1.parent is None:
                 print(f'Setando vertice raiz: {v1}')
 
-                self.root_vertex = v1
+                self.root_vertex_list.append(v1)
 
             GraphV2.vertex_counter += 1
 
