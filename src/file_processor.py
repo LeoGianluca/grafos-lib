@@ -53,8 +53,7 @@ def read_file_matrix(file):
         arestas = []  # Lista de arestas do grafo
         vertices_finais = []  # Lista de vertices finais do grafo
 
-        file_lines = [(line_num, line) for line_num, line in
-                      enumerate(f)]  # Lista de tuplas (numero da linha, conteudo da linha)
+        file_lines = [(line_num, line) for line_num, line in enumerate(f)]  # Lista de tuplas (numero da linha, conteudo da linha)
 
         print('')
 
@@ -79,18 +78,19 @@ def read_file_matrix(file):
             for idx, val in enumerate(line_values):  # Itera sobre os valores da linha
                 if idx == 0:  # Verifica se é o primeiro valor da linha
                     vertice1 = line_values[0]  # Atribui o valor do vertice inicial
-                    print(
-                        f'Processando conexões para o vértice {vertice1}')  # ignorando primeira valor (rótulo do vértice)
+                    print(f'Processando conexões para o vértice {vertice1}')  # ignorando primeira valor (rótulo do vértice)
                     continue
 
-                if int(val) > 0:  # Verifica se o valor é maior que zero
+                peso_aresta = int(val)
+
+                if peso_aresta > 0:  # Verifica se peso da aresta > 0, se sim existe ligação entre os vértices
                     vertice2 = vertices_finais[int(idx) - 1]  # Atribui o valor do vertice final
 
                     if vertice1 != vertice2:  # Ignorando auto-conexões (A, A), (B, B) e etc
-                        arestas.append([vertice1, vertice2])  # Adiciona a aresta a lista de arestas
-                        print(f'  Vértice ligado = {vertice2} ({val})')
+                        arestas.append([vertice1, vertice2, peso_aresta])  # Adiciona a aresta a lista de arestas
+                        print(f'  Vértice ligado = {vertice2} (peso_aresta = {peso_aresta})')
                     else:  # Caso o vertice inicial seja igual ao vertice final
-                        print(f'  Vértice auto-conectado [({vertice1}, {vertice2}) ({val})] [* Ignorado *]')
+                        print(f'  Vértice auto-conectado [({vertice1}, {vertice2}) ({peso_aresta})] [* Ignorado *]')
 
         print('')
         print(f'Arestas: {arestas}')

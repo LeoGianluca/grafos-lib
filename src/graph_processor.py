@@ -1,8 +1,8 @@
-from collections import defaultdict
 import random
+from collections import defaultdict
 
-# from graph import Grafo
 import graph
+import graph2
 
 
 class GraphProcessor:
@@ -14,10 +14,16 @@ class GraphProcessor:
         self.input_format = input_format  # Formato de entrada
         self.input_content = input_content  # Conteúdo de entrada
         self.adj = defaultdict(set)  # Dicionário de adjacências
+
         if input_content is not None:  # Se o conteúdo de entrada não for nulo
             self.grafo = graph.Grafo(input_content)  # Cria um grafo com o conteúdo de entrada
         else:  # Se o conteúdo de entrada for nulo
             self.grafo = None  # O grafo é nulo
+
+        if input_content is not None:  # Se o conteúdo de entrada não for nulo
+            self.grafoV2 = graph2.GraphV2(input_content)  # Cria um grafo com o conteúdo de entrada
+        else:  # Se o conteúdo de entrada for nulo
+            self.grafoV2 = None  # O grafo é nulo
 
     def criacao_grafo_x_vertices(self, extra_args):
         print(f"Execuntando 'criacao_grafo_x_vertices' [extra_args={extra_args}]")
