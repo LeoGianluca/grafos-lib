@@ -43,22 +43,25 @@ def main():
         'criacao_grafo_x_vertices': graph_processor.criacao_grafo_x_vertices,
         'criacao_arestas': graph_processor.criacao_arestas,
         'remocao_arestas': graph_processor.remocao_arestas,
+        'rotulacao_vertices': graph_processor.rotulacao_vertices,
+        'rotulacao_arestas': graph_processor.rotulacao_arestas,
         'checagem_adjacencia_vertices': graph_processor.checagem_adjacencia_vertices,
         'checagem_adjacencia_arestas': graph_processor.checagem_adjacencia_arestas,
         'checagem_existencia_arestas': graph_processor.checagem_existencia_arestas,
+        'naive': graph_processor.naive,
     }
 
     # Dicionário de mapeamento do parametro de entrada (--operation) para o método de processamento correspondente
     # para métodos sem argumentos
     functions_no_extra_args = {
         'ponderacao_vertices': graph_processor.ponderacao_vertices,
-        'rotulacao_vertices': graph_processor.rotulacao_vertices,
         'ponderacao_arestas': graph_processor.ponderacao_arestas,
-        'rotulacao_arestas': graph_processor.rotulacao_arestas,
         'checagem_quantidade_vertices': graph_processor.checagem_quantidade_vertices,
         'checagem_quantidade_arestas': graph_processor.checagem_quantidade_arestas,
         'checagem_grafo_vazio': graph_processor.checagem_grafo_vazio,
         'checagem_grafo_completo': graph_processor.checagem_grafo_completo,
+        'tarjan': graph_processor.algorithm_tarjan,
+        'fluery': graph_processor.algorithm_fluery,
     }
 
     # Nome da operação informada na chamada do programa (Ex: --operation=rotulacao_vertices)
@@ -79,7 +82,7 @@ def main():
 if __name__ == '__main__':
     print('')
     print('Trabalho de teoria de grafos e computabilidade (Eng Software / PUC Minas)')
-    print('Aluno: Leonardo Gianluca')
+    print('Aluno: Leonardo Gianluca | Matrícula: 633325')
     print('')
 
     main()

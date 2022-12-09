@@ -15,88 +15,116 @@ class GraphProcessor:
         self.input_content = input_content  # Conteúdo de entrada
         self.adj = defaultdict(set)  # Dicionário de adjacências
 
-        if input_content is not None:  # Se o conteúdo de entrada não for nulo
-            self.grafo = graph.Grafo(input_content)  # Cria um grafo com o conteúdo de entrada
+        # Se o conteúdo de entrada não for nulo
+        if input_content is not None:
+            # Cria um grafo com o conteúdo de entrada
+            self.grafo = graph.Grafo(input_content)
         else:  # Se o conteúdo de entrada for nulo
             self.grafo = None  # O grafo é nulo
 
-        if input_content is not None:  # Se o conteúdo de entrada não for nulo
-            self.grafoV2 = graph2.GraphV2(input_content)  # Cria um grafo com o conteúdo de entrada
-        else:  # Se o conteúdo de entrada for nulo
-            self.grafoV2 = None  # O grafo é nulo
+        # Se o conteúdo de entrada não for nulo
+        if input_content is not None:
+            # Cria um grafo com o conteúdo de entrada
+            self.grafoV2 = graph2.GraphV2(input_content)
+        # Se o conteúdo de entrada for nulo
+        else:
+            # O grafo é nulo
+            self.grafoV2 = None
 
     def criacao_grafo_x_vertices(self, extra_args):
         print(f"Execuntando 'criacao_grafo_x_vertices' [extra_args={extra_args}]")
 
-        # Gerando um grafo com x vértices aleatóriamente com letras de A a Z não repetidas
         vertices = []  # Lista de vértices
-        for i in range(0, int(extra_args)):  # Para cada vértice
-            random_number = random.randint(1, 11000)  # Gera um número aleatório entre 1 e 11000
-            if random_number not in vertices:  # Se o número não estiver nos vértices
-                vertices.append(random_number)  # Adiciona o número aos vértices
-            else:  # Se o número estiver nos vértices
-                random_number = random.randint(1, 11000)  # Gera um novo número aleatório entre 1 e 11000
-                vertices.append(random_number)  # Adiciona o novo número aos vértices
+        # Para cada vértice
+        for i in range(0, int(extra_args)):
+            # Gera um número aleatório entre 1 e 11000
+            random_number = random.randint(1, 11000)
+            # Se o número não estiver nos vértices
+            if random_number not in vertices:
+                # Adiciona o número aos vértices
+                vertices.append(random_number)
+            # Se o número estiver nos vértices
+            else:
+                # Gera um novo número aleatório entre 1 e 11000
+                random_number = random.randint(1, 11000)
+                # Adiciona o novo número aos vértices
+                vertices.append(random_number)
 
-        # Víncula os vertices ao primeiro vertice
         arestas = []  # Lista de arestas
-        for i in range(1, len(vertices)):  # Para cada vértice
-            arestas.append((vertices[0], vertices[i]))  # Adiciona uma aresta entre o primeiro vértice e o vértice atual
+        # Para cada vértice
+        for i in range(1, len(vertices)):
+            # Adiciona uma aresta entre o primeiro vértice e o vértice atual
+            arestas.append((vertices[0], vertices[i], 1))
 
-        # Cria e imprime o grafo. O grafo é criado com os vértices e as arestas
-        self.grafo = graph.Grafo(vertices, arestas, direcionado=True)  # Cria um grafo com as arestas e direcionado
-        return self.grafo  # Retorna o grafo
+        # Cria um grafo com os vértices e as arestas
+        graph2.GraphV2(arestas)
+
+        return self.grafoV2
 
     def criacao_arestas(self, extra_args):
         print(f"Execuntando 'criacao_arestas' [extra_args={extra_args}]")
 
         # gera arestas aleatórias a classe Grafo sem criar arestas repetidas
-        arestas = self.grafo.get_arestas()  # Pega as arestas do grafo
-        novas_arestas = []  # Lista de novas arestas
-        for i in range(0, int(extra_args)):  # Para cada aresta
-            random_number = random.randint(1, 11000)  # Gera um número aleatório entre 1 e 11000
-            if random_number not in arestas:  # Se o número não estiver nas arestas
-                novas_arestas.append([i, random_number])  # Adiciona o número às novas arestas
-            else:  # Se o número estiver nas arestas
-                random_number = random.randint(1, 11000)  # Gera um novo número aleatório entre 1 e 11000
-                novas_arestas.append([i, random_number])  # Adiciona o novo número às novas arestas
+        arestas = self.grafoV2.get_edges()
 
-        self.grafo.adiciona_arestas(novas_arestas)  # Adiciona as novas arestas ao grafo
+        # Lista de novas arestas
+        novas_arestas = []
+        # Para cada aresta
+        for i in range(0, int(extra_args)):
+            # Gera um número aleatório entre 1 e 11000
+            random_number = random.randint(1, 11000)
+            # Se o número não estiver nas arestas
+            if random_number not in arestas:
+                # Adiciona o número às novas arestas
+                novas_arestas.append([i, random_number, 1])
+            else:  # Se o número estiver nas arestas
+                # Gera um novo número aleatório entre 1 e 11000
+                random_number = random.randint(1, 11000)
+                # Adiciona o novo número às novas arestas
+                novas_arestas.append([i, random_number, 1])
+
+        self.grafoV2.add_edge(novas_arestas)
 
     def remocao_arestas(self, extra_args):
         print(f"Execuntando 'remocao_arestas' [extra_args={extra_args}]")
 
+        # Remove a aresta
         graph2.GraphV2.remove_edge(self.grafoV2, extra_args)
 
     def rotulacao_vertices(self, extra_args):
         print(f"Execuntando 'rotulacao_vertices' [extra_args={extra_args}]")
-        # TODO: Implementar rotulacao_vertices (ERROR)
-        # cria um dicionário com os vértices e seus rótulos
-        self.grafo.rotulos = extra_args
-        print(self.grafo.get_rotulo())
+
+        # Adiciona um rótulo ao vértice
+        self.grafoV2.set_label_vertex(extra_args)
 
     def ponderacao_vertices(self):
         print(f"Execuntando 'ponderacao_vertices'")
-        self.grafo.pondera_vertices()
-        # TODO: Implementar ponderacao_vertices
-        pass
 
-    def ponderacao_arestas(self, extra_args):
-        print(f"Execuntando 'ponderacao_arestas' [extra_args={extra_args}]")
-        self.grafo.pondera_arestas(extra_args)  # Pondera as arestas
+        # Adiciona um peso ao vértice
+        self.grafoV2.weight_vertex()
 
-    def rotulacao_arestas(self, extra_args):
-        print(f"Execuntando 'rotulacao_arestas' [extra_args={extra_args}]")
-        self.grafoV2.label_edge(extra_args)
+    def ponderacao_arestas(self):
+        print(f"Execuntando 'ponderacao_arestas'")
+
+        # Adiciona um peso à aresta
+        self.grafoV2.weight_edge()
+
+    def rotulacao_arestas(self):
+        print(f"Execuntando 'rotulacao_arestas'")
+
+        # Adiciona um rótulo à aresta
+        self.grafoV2.label_edge()
 
     def checagem_adjacencia_vertices(self, extra_args):
         print(f"Execuntando 'checagem_adjacencia_vertices' [extra_args={extra_args}]")
 
+        # Checa se os vértices são adjacentes
         self.grafoV2.vertex_adjacency(extra_args)
 
     def checagem_adjacencia_arestas(self, extra_args):
         print(f"Execuntando 'checagem_adjacencia_arestas' [extra_args={extra_args}]")
 
+        # Checa se as arestas são adjacentes
         self.grafoV2.edge_adjacency(extra_args)
 
     def checagem_existencia_arestas(self, extra_args):
@@ -105,45 +133,55 @@ class GraphProcessor:
         # Verifica se a aresta existe
         if self.grafoV2.has_edge(extra_args):
             print(f"Aresta {extra_args} existe")
+        else:
+            print(f"Aresta {extra_args} não existe")
 
     def checagem_quantidade_vertices(self):
         print(f"Execuntando 'checagem_quantidade_vertices'")
 
-        print(f"Quantidade de vertices: {len(self.grafo.get_vertex())}")  # Imprime a quantidade de vértices
+        # Retorna a quantidade de vértices
+        print(f"Quantidade de vértices: {self.grafoV2.get_number_vertices()}")
 
     def checagem_quantidade_arestas(self):  # Imprime a quantidade de arestas
         print(f"Execuntando 'checagem_quantidade_arestas'")
 
-        print(f"Quantidade de arestas: {len(self.grafoV2.get_edges())}")  # Imprime a quantidade de arestas
+        print(f"Quantidade de arestas: {self.grafoV2.get_number_edges()}")
 
     def checagem_grafo_vazio(self):
         print(f"Execuntando 'checagem_grafo_vazio'")
 
-        for vertex in self.grafoV2.root_vertex_list:  # Para cada vértice
-            if vertex.get_edge_list():
-                print("Grafo não vazio")
-                return
-        print("Grafo vazio")
+        # Verifica se o grafo está vazio
+        if self.grafoV2.is_empty():
+            print("Grafo vazio")
+        else:
+            print("Grafo não vazio")
 
     def checagem_grafo_completo(self):
         print(f"Execuntando 'checagem_grafo_completo'")
 
-        for vertex in self.grafoV2.root_vertex_list:
-            if len(vertex.edges) != len(self.grafoV2.root_vertex_list) - 1:
-                return False
-        return True
+        # Verifica se o grafo é completo
+        if self.grafoV2.is_complete():
+            print("Grafo completo")
+        else:
+            print("Grafo não completo")
 
     def naive(self, extra_args):
         print(f"Execuntando 'naive' [extra_args={extra_args}]")
+
+        # Executa o algoritmo naive utilizando busca em profundidade
         self.grafoV2.search_depth(extra_args)
 
-    def fleury(self, extra_args):
+    def algorithm_fluery(self, extra_args):
         print(f"Execuntando 'fleury' [extra_args={extra_args}]")
-        if not self.grafoV2.is_eulerian():
-            return None
-        else:
+
+        # Verifica se o grafo é euleriano
+        if not self.grafoV2.is_eulerian():  # Se não for euleriano
+            print("Grafo não é euleriano")
+        else:  # Se for euleriano
             self.grafoV2.fleury(extra_args)
 
     def algorithm_tarjan(self):
         print(f"Execuntando 'tarjan'")
+
+        # Executa o algoritmo de Tarjan
         self.grafoV2.tarjan()

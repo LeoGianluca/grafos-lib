@@ -3,7 +3,6 @@ import argparse
 
 import graph_processor as module
 import file_processor
-import graph2
 
 
 class TestGraphProcessor(unittest.TestCase):
@@ -36,14 +35,7 @@ class TestGraphProcessor(unittest.TestCase):
         graph_info = file_processor.read(file_in, 'matriz')
         # graph_info = [['A', 'B', 4], ['A', 'C', 3], ['A', 'D', 2], ['A', 'E', 1]]
 
-        grafo = graph2.GraphV2(graph_info)
-
-        print()
-        print(graph_info)
-        print()
-        print(grafo)
-        print()
-        print(grafo.root_vertex_list.__repr__())
+        module.GraphProcessor.criacao_grafo_x_vertices(self, 4)
 
     def test_ponderacao_arestas(self):
         pass
