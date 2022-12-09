@@ -93,13 +93,13 @@ class GraphProcessor:
         print(f"Execuntando 'ponderacao_vertices'")
 
         # Adiciona um peso ao vértice
-        self.grafo.weight_vertex()
+        self.grafo.perform_vertex_weighting()
 
     def ponderacao_arestas(self):
         print(f"Execuntando 'ponderacao_arestas'")
 
         # Adiciona um peso à aresta
-        self.grafo.weight_edge()
+        self.grafo.perform_edge_weighting()
 
     def rotulacao_arestas(self):
         print(f"Execuntando 'rotulacao_arestas'")

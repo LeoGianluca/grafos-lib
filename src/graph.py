@@ -332,15 +332,19 @@ class Graph(object):
 
     def get_number_vertices(self):
         """ Retorna o número de vértices do grafo. """
-        return len(self.root_vertex_list) # Retorna o número de vértices do grafo
+        return len(self.root_vertex_list)  # Retorna o número de vértices do grafo
 
     def get_number_edges(self):
         """ Retorna o número de arestas do grafo. """
-        return len(self.get_edges()) # Retorna o número de arestas do grafo
+        return len(self.get_edges())  # Retorna o número de arestas do grafo
+
+    def has_edge(self, edge):
+        """ Verifica se o grafo possui a aresta. """
+        return edge in self.get_edges()
 
     def is_empty(self):
         """ Verifica se o grafo está vazio. """
-        return self.root_vertex_list == set() # Retorna se o grafo está vazio
+        return self.root_vertex_list == set()  # Retorna se o grafo está vazio
 
     def is_complete(self):
         """ Verifica se o grafo é completo. """
