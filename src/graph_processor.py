@@ -66,15 +66,7 @@ class GraphProcessor:
     def remocao_arestas(self, extra_args):
         print(f"Execuntando 'remocao_arestas' [extra_args={extra_args}]")
 
-        if extra_args.find("|") != -1:  # Se o extra_args tiver um |
-            extra_args = extra_args.split("|")  # Separa os argumentos
-        else:
-            extra_args = [extra_args]  # Se não tiver um |, o extra_args é uma lista com o argumento
-
-        for extra_arg in extra_args:  # Para cada argumento
-            aux = extra_arg.split(";")  # Separa o argumento
-            aux = [int(i) for i in aux]  # Converte os argumentos para inteiros
-            self.grafo.remove_arco(aux[0], aux[1])  # Remove o arco
+        graph2.GraphV2.remove_edge(self.grafoV2, extra_args)
 
     def rotulacao_vertices(self, extra_args):
         print(f"Execuntando 'rotulacao_vertices' [extra_args={extra_args}]")
@@ -86,6 +78,8 @@ class GraphProcessor:
     def ponderacao_vertices(self):
         print(f"Execuntando 'ponderacao_vertices'")
         self.grafo.pondera_vertices()
+        # TODO: Implementar ponderacao_vertices
+        pass
 
     def ponderacao_arestas(self, extra_args):
         print(f"Execuntando 'ponderacao_arestas' [extra_args={extra_args}]")
@@ -93,69 +87,63 @@ class GraphProcessor:
 
     def rotulacao_arestas(self, extra_args):
         print(f"Execuntando 'rotulacao_arestas' [extra_args={extra_args}]")
-        self.grafo.rotula_arestas(extra_args)  # Rotula as arestas
+        self.grafoV2.label_edge(extra_args)
 
     def checagem_adjacencia_vertices(self, extra_args):
         print(f"Execuntando 'checagem_adjacencia_vertices' [extra_args={extra_args}]")
 
-        adjacentes = self.grafo.vertices_adjacentes(extra_args)  # Pega os vértices adjacentes
-
-        print(f"Adjacentes ao vertice {extra_args}: ", adjacentes)  # Imprime os vértices adjacentes
+        self.grafoV2.vertex_adjacency(extra_args)
 
     def checagem_adjacencia_arestas(self, extra_args):
         print(f"Execuntando 'checagem_adjacencia_arestas' [extra_args={extra_args}]")
 
-        adjacentes = self.grafo.arestas_adjacentes(extra_args)  # Pega as arestas adjacentes
-
-        print(f"Adjacentes a aresta {extra_args}: ", adjacentes)  # Imprime as arestas adjacentes
+        self.grafoV2.edge_adjacency(extra_args)
 
     def checagem_existencia_arestas(self, extra_args):
         print(f"Execuntando 'checagem_existencia_arestas' [extra_args={extra_args}]")
 
-        if extra_args.find("|") != -1:  # Se o extra_args tiver um |
-            extra_args = extra_args.split("|")  # Separa os argumentos
-        else:
-            extra_args = [extra_args]  # Se não tiver um |, o extra_args é uma lista com o argumento
-
-        for extra_arg in extra_args:  # Para cada argumento
-            aux = extra_arg.split(";")  # Separa o argumento
-            aux = [int(i) for i in aux]  # Converte os argumentos para inteiros
-            print(f"Existe aresta entre {aux[0]} e {aux[1]}: {self.grafo.existe_aresta(aux[0], aux[1])}")
+        # Verifica se a aresta existe
+        if self.grafoV2.has_edge(extra_args):
+            print(f"Aresta {extra_args} existe")
 
     def checagem_quantidade_vertices(self):
         print(f"Execuntando 'checagem_quantidade_vertices'")
 
-        print(f"Quantidade de vertices: {len(self.grafo.get_vertices())}")  # Imprime a quantidade de vértices
+        print(f"Quantidade de vertices: {len(self.grafo.get_vertex())}")  # Imprime a quantidade de vértices
 
     def checagem_quantidade_arestas(self):  # Imprime a quantidade de arestas
         print(f"Execuntando 'checagem_quantidade_arestas'")
 
-        print(f"Quantidade de arestas: {len(self.grafo.get_arestas())}")  # Imprime a quantidade de arestas
+        print(f"Quantidade de arestas: {len(self.grafoV2.get_edges())}")  # Imprime a quantidade de arestas
 
     def checagem_grafo_vazio(self):
         print(f"Execuntando 'checagem_grafo_vazio'")
 
-        if not self.grafo.get_arestas():  # Se não houver arestas
-            return True  # Imprime que o grafo está vazio
-        else:  # Se houver arestas
-            return False  # Imprime que o grafo não está vazio
+        for vertex in self.grafoV2.root_vertex_list:  # Para cada vértice
+            if vertex.get_edge_list():
+                print("Grafo não vazio")
+                return
+        print("Grafo vazio")
 
     def checagem_grafo_completo(self):
         print(f"Execuntando 'checagem_grafo_completo'")
 
-        if self.grafo.grafo_completo():  # Se o grafo for completo
-            print("Grafo completo")  # Imprime que o grafo é completo
-        else:  # Se o grafo não for completo
-            print("Grafo não completo")  # Imprime que o grafo não é completo
+        for vertex in self.grafoV2.root_vertex_list:
+            if len(vertex.edges) != len(self.grafoV2.root_vertex_list) - 1:
+                return False
+        return True
 
     def naive(self, extra_args):
         print(f"Execuntando 'naive' [extra_args={extra_args}]")
-        self.grafo.naive_profundidade(extra_args)  # Executa o algoritmo naive
+        self.grafoV2.search_depth(extra_args)
 
     def fleury(self, extra_args):
         print(f"Execuntando 'fleury' [extra_args={extra_args}]")
-        self.grafo.fleury(extra_args)  # Executa o Algoritmo de
+        if not self.grafoV2.is_eulerian():
+            return None
+        else:
+            self.grafoV2.fleury(extra_args)
 
-    def tarjan(self):
+    def algorithm_tarjan(self):
         print(f"Execuntando 'tarjan'")
-        self.grafo.tarjan()  # Executa o Algoritmo de Tarjan
+        self.grafoV2.tarjan()
