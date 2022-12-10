@@ -1,6 +1,6 @@
 import argparse
 
-import file_processor
+from file_processor import FileProcessor
 from graph_processor import GraphProcessor
 
 
@@ -29,6 +29,8 @@ def main():
     args = parser.parse_args()
 
     graph_info = None
+
+    file_processor = FileProcessor()
 
     # Obtem conteúdo do arquivo de entrada, se informado
     if args.file_in:
@@ -72,9 +74,9 @@ def main():
 
     # Verificando a lista de funções e executando o método, caso localizado
     if func_name in functions_extra_args:  # Verifica se a operação informada possui argumentos extras
-        functions_extra_args[func_name](args.extra_args)  # Executa o método correspondente
+        functions_extra_args[func_name](args.extra_args, args.file_out)  # Executa o método correspondente
     elif func_name in functions_no_extra_args:  # Verifica se a operação informada não possui argumentos extras
-        functions_no_extra_args[func_name]()  # Executa o método correspondente
+        functions_no_extra_args[func_name](args.file_out)  # Executa o método correspondente
     else:  # Caso a operação informada não seja localizada
         print("Operação não localizada, verifique a documentação")
 
