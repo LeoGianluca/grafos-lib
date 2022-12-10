@@ -170,7 +170,7 @@ class GraphProcessor:
         if not self.grafo.is_eulerian():  # Se não for euleriano
             print("Grafo não é euleriano")
         else:  # Se for euleriano
-            self.grafo.fleury(extra_args)
+            self.grafo.algorithm_fleury(extra_args)
 
     def algorithm_tarjan(self):
         print(f"Execuntando 'tarjan'")

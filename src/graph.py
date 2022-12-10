@@ -135,6 +135,34 @@ class Vertex(object):
                         stack.append(edge.origin)
         return visited
 
+    def algorithm_fleury(self):
+        """ Algoritmo de Fleury """
+        # Se o grafo for euleriano
+        if self.is_eulerian():
+            # Inicializa a lista de arestas
+            edges = list()
+            # Inicializa a lista de vértices
+            vertices = list()
+            # Adiciona o vértice atual na lista de vértices
+            vertices.append(self)
+            # Enquanto a lista de vértices não estiver vazia
+            while vertices:
+                # Retira o último vértice da lista
+                vertex = vertices.pop()
+                # Para cada aresta do vértice
+                for edge in vertex.children_edges:
+                    # Se a aresta não for ponte
+                    if not edge.is_bridge():
+                        # Adiciona a aresta na lista de arestas
+                        edges.append(edge)
+                        # Remove a aresta do grafo
+                        edge.remove_edge()
+                        # Adiciona o vértice de destino na lista de vértices
+                        vertices.append(edge.destination)
+            # Retorna a lista de arestas
+            return edges
+        return None
+
     def vertex_weighting(self):
         """ Retorna o peso do vértice """
 
