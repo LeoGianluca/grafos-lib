@@ -43,6 +43,16 @@ class Testing(unittest.TestCase):
 
         self.assertEqual(file_content, file_content_readed)
 
+    def test_write_file_graph_as_list(self):
+        file_path = './data/out/teste-lista-out.csv'
+        file_content = [['A', 'B', 3], ['A', 'C', 42], ['C', 'E', 51]]
+        file_content_expected = [['A', 'B'], ['A', 'C'], ['C', 'E']]
+
+        self.file_processor.write_file_graph_as_list(file_path, file_content)
+        file_content_readed = self.file_processor.read_file_list(file_path)
+
+        self.assertEqual(file_content_expected, file_content_readed)
+
 
 if __name__ == '__main__':
     unittest.main()

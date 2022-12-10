@@ -134,7 +134,7 @@ class FileProcessor(object):
         """
         with open(file_path, 'w') as f:
             for line in file_content:
-                f.write(f'{line[0]};{line[1]}')
+                f.write(f'{line[0]};{line[1]}\n')
 
                 if line != file_content[-1]:  # Verifica se é a ultima linha do arquivo
                     f.write('')  # Adiciona uma quebra de linha
