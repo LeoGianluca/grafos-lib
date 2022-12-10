@@ -2,10 +2,13 @@ import unittest
 import argparse
 
 import graph_processor as module
-import file_processor
+from src.file_processor import FileProcessor
 
 
 class TestGraphProcessor(unittest.TestCase):
+
+    file_processor = FileProcessor()
+
     def test_criacao_grafo_x_vertices(self):
         vertices = 4
         grafo = module.GraphProcessor.criacao_grafo_x_vertices(self, vertices)
@@ -32,7 +35,7 @@ class TestGraphProcessor(unittest.TestCase):
 
     def test_ponderacao_vertices(self):
         file_in = 'data/in/teste-matriz-1.csv'
-        graph_info = file_processor.read(file_in, 'matriz')
+        self.file_processor.read_file_matrix(file_in)
         # graph_info = [['A', 'B', 4], ['A', 'C', 3], ['A', 'D', 2], ['A', 'E', 1]]
 
         module.GraphProcessor.criacao_grafo_x_vertices(self, 4)

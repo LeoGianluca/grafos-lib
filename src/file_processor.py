@@ -10,10 +10,6 @@ class FileProcessor(object):
     FILE_TYPE_LISTA_EXT: str = '.adj_list'
     FILE_TYPE_TXT_EXT: str = '.txt'
 
-    # def __init__(self, data_input_dir: str = "./src/data/in", data_output_dir: str = "./src/data/out"):
-    #     self.data_input_dir = data_input_dir
-    #     self.data_output_dir = data_output_dir
-
     def read(self, file_path, file_type):
         print(f'Processando arquivo (arquivo={file_path}, tipo={file_type})')
 
@@ -161,7 +157,9 @@ class FileProcessor(object):
                 if header_vertex_1 not in vertices:  # Verifica se o vertice final não está na lista de vertices
                     vertices.append(header_vertex_1)  # Adiciona o vertice final a lista de vertices
 
-            file_header = f';{";".join(vertices)}'
+            file_header = ''
+            for v in vertices:
+                file_header += f';{v}'
             f.write(file_header + '\n')  # Escreve o cabecalho do arquivo
 
         with open(file_path, 'w') as f:

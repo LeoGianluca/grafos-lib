@@ -1,5 +1,6 @@
 import random
 from collections import defaultdict
+from src.file_processor import FileProcessor
 
 import graph
 
@@ -8,6 +9,8 @@ class GraphProcessor:
     """
     Classe de manipulação de grafos
     """
+
+    file_processor = FileProcessor()
 
     def __init__(self, input_format, input_content):
         self.input_format = input_format  # Formato de entrada
@@ -51,7 +54,8 @@ class GraphProcessor:
         # Cria um grafo com os vértices e as arestas
         graph.Graph(arestas)
 
-        return self.grafo
+        file_path = './data/out/criacao_grafo_x_vertices.csv'
+        self.file_processor.write_file_graph_as_matrix(file_path, arestas)
 
     def criacao_arestas(self, extra_args):
         print(f"Execuntando 'criacao_arestas' [extra_args={extra_args}]")

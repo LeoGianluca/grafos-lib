@@ -36,7 +36,7 @@ class Testing(unittest.TestCase):
 
     def test_write_file_graph_as_matrix(self):
         file_path = './data/out/teste-matriz-out.csv'
-        file_content = [['A', 'B', 12], ['A', 'C', 4], ['A', 'D', 1], ['A', 'E', 5], ['C', 'E', 2]]
+        file_content = [['A', 'B', 3], ['A', 'C', 42], ['A', 'D', 99], ['C', 'E', 51]]
 
         self.file_processor.write_file_graph_as_matrix(file_path, file_content)
         file_content_readed = self.file_processor.read_file_matrix(file_path)
