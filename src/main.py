@@ -76,7 +76,7 @@ def main():
     if func_name in functions_extra_args:  # Verifica se a operação informada possui argumentos extras
         functions_extra_args[func_name](args.extra_args, args.file_out)  # Executa o método correspondente
     elif func_name in functions_no_extra_args:  # Verifica se a operação informada não possui argumentos extras
-        functions_no_extra_args[func_name](args.file_out)  # Executa o método correspondente
+        functions_no_extra_args[func_name]()  # Executa o método correspondente
     else:  # Caso a operação informada não seja localizada
         print("Operação não localizada, verifique a documentação")
 

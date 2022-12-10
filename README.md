@@ -59,7 +59,7 @@ python3 ./src/main.py --format=matriz --file-in=./src/data/in/teste-matriz-1.csv
 ```bash
 Cenário 6 - Checagem de existência de arestas
 
-python3 ./src/main.py --format=matriz --file-in=./src/data/in/teste-matriz-1.csv --file-out=./src/data/out/output10-checagem-existencia-arestas-output.txt --operation=checagem_existencia_arestas
+python3 ./src/main.py --format=matriz --file-in=./src/data/in/teste-matriz-1.csv --file-out=./src/data/out/output10-checagem-existencia-arestas-output.txt --operation=checagem_existencia_arestas --extra_args="['A','B']"
 ```
 
 ```bash

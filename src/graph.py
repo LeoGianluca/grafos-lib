@@ -242,7 +242,10 @@ class Graph(object):
 
             v2 = Vertex(value[1], v1, None)  # Cria o vértice 2
 
-            e1 = Edge(v1, v2, value[2])  # Cria a aresta 1
+            if len(value) > 2:
+                e1 = Edge(v1, v2, value[2])  # Cria a aresta 1
+            else:
+                e1 = Edge(v1, v2, 1)  # Cria a aresta 1
 
             v1.add_edge(e1)  # Adiciona a aresta 1 no vértice 1
 
@@ -318,6 +321,9 @@ class Graph(object):
 
     def edge_adjacency(self, edge):
         """ Verifica se a aresta é adjacente. """
+
+        if edge != Edge:  # Se a aresta for uma aresta
+            return
 
         for vertex in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
             if vertex == edge.first:  # Se o vértice for o vértice 1 da aresta

@@ -1,6 +1,6 @@
 import random
 from collections import defaultdict
-from src.file_processor import FileProcessor
+from file_processor import FileProcessor
 
 import graph
 
@@ -26,7 +26,7 @@ class GraphProcessor:
             # O grafo é nulo
             self.grafo = None
 
-    def criacao_grafo_x_vertices(self, extra_args):
+    def criacao_grafo_x_vertices(self, extra_args, file_out_path):
         print(f"Execuntando 'criacao_grafo_x_vertices' [extra_args={extra_args}]")
 
         vertices = []  # Lista de vértices
@@ -54,10 +54,10 @@ class GraphProcessor:
         # Cria um grafo com os vértices e as arestas
         graph.Graph(arestas)
 
-        file_path = './data/out/criacao_grafo_x_vertices.csv'
-        self.file_processor.write_file_graph_as_matrix(file_path, arestas)
+        # Gravando arquivo de saída
+        self.file_processor.write_file_graph_as_matrix(file_out_path, arestas)
 
-    def criacao_arestas(self, extra_args):
+    def criacao_arestas(self, extra_args, file_out_path):
         print(f"Execuntando 'criacao_arestas' [extra_args={extra_args}]")
 
         # gera arestas aleatórias a classe Grafo sem criar arestas repetidas
@@ -81,17 +81,19 @@ class GraphProcessor:
 
         self.grafo.add_edge(novas_arestas)
 
-    def remocao_arestas(self, extra_args):
+    def remocao_arestas(self, extra_args, file_out_path):
         print(f"Execuntando 'remocao_arestas' [extra_args={extra_args}]")
 
         # Remove a aresta
         graph.Graph.remove_edge(self.grafo, extra_args)
 
-    def rotulacao_vertices(self, extra_args):
+    def rotulacao_vertices(self, extra_args, file_out_path):
         print(f"Execuntando 'rotulacao_vertices' [extra_args={extra_args}]")
 
         # Adiciona um rótulo ao vértice
-        self.grafo.set_label_vertex(extra_args)
+
+        for vertex in self.grafo.root_vertex_list:
+            vertex.set_label_vertex(extra_args)
 
     def ponderacao_vertices(self):
         print(f"Execuntando 'ponderacao_vertices'")
@@ -111,19 +113,19 @@ class GraphProcessor:
         # Adiciona um rótulo à aresta
         self.grafo.label_edge()
 
-    def checagem_adjacencia_vertices(self, extra_args):
+    def checagem_adjacencia_vertices(self, extra_args, file_out_path):
         print(f"Execuntando 'checagem_adjacencia_vertices' [extra_args={extra_args}]")
 
         # Checa se os vértices são adjacentes
         self.grafo.vertex_adjacency(extra_args)
 
-    def checagem_adjacencia_arestas(self, extra_args):
+    def checagem_adjacencia_arestas(self, extra_args, file_out_path):
         print(f"Execuntando 'checagem_adjacencia_arestas' [extra_args={extra_args}]")
 
         # Checa se as arestas são adjacentes
         self.grafo.edge_adjacency(extra_args)
 
-    def checagem_existencia_arestas(self, extra_args):
+    def checagem_existencia_arestas(self, extra_args, file_out_path):
         print(f"Execuntando 'checagem_existencia_arestas' [extra_args={extra_args}]")
 
         # Verifica se a aresta existe
