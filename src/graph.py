@@ -1,313 +1,383 @@
-from collections import defaultdict
-import random
+from collections import deque
 
 
-class Grafo(object):
-    """ Implementação básica de um grafo. """
+class Vertex(object):
+    """ Classe que representa os vértices de um grafo """
+    id_counter = 0
 
-    def __init__(self, vertices, arestas, direcionado=False):
-        """Inicializa as estruturas base do grafo."""
-        self.adj = defaultdict(set)  # Dicionário de adjacências.
-        self.direcionado = direcionado  # O grafo é direcionado?
-        self.adiciona_vertices(vertices)  # Adiciona os vértices.
-        self.adiciona_arestas(arestas)  # Adiciona as arestas ao grafo.
-        self.pesos = None  # Peso dos vértices.
-        self.rotulos = {}  # Rótulos dos vértices.
+    def __init__(self, label: str, parent, children_edges=None):
+        self.id = Vertex.id_counter
+        self.label = label  # Rótulo do vérice (Ex: A. B, X, W, ...)
+        self.parent = parent  # Vértice pai deste vértice
 
-    def get_vertices(self):
-        """ Retorna a lista de vértices do grafo. """
-        # Retorna a lista de vértices.
-        return list(self.adj.keys())
+        if children_edges is None:
+            self.children_edges = set()  # Lista de arestas originadas do vértice atual
 
-    def get_arestas(self):
-        """ Retorna a lista de arestas do grafo. """
-        # Retorna a lista de arestas.
-        return [(k, v) for k in self.adj.keys() for v in self.adj[k]]
+        Vertex.id_counter += 1
 
-    def get_rotulo(self):
-        """ Retorna o rótulo do vértice 'v'. """
-        # Retorna o rótulo do vértice.
-        return self.rotulos
+    def add_edge(self, edge):
+        """ Adiciona uma aresta ao grafo. """
+        self.children_edges.add(edge)
 
-    def adiciona_arestas(self, arestas):
-        """ Adiciona arestas ao grafo. """
-        # Para cada aresta.
-        # Se o grafo for direcionado, adiciona apenas a aresta (u, v).
-        # Se o grafo for não-direcionado, adiciona as arestas (u, v) e (v, u).
-        for u, v in arestas:
-            self.adiciona_arco(u, v)
+    def remove_edge(self, edge):
+        """ Remove uma aresta do grafo. """
+        self.children_edges.remove(edge)
 
-    def adiciona_vertices(self, vertices):
-        """ Adiciona vértices ao grafo. """
-        # Para cada vértice.
-        for v in vertices:
-            # Adiciona o vértice ao grafo.
-            self.adj[v]
+    def vertex_adjacency(self):
+        """ Retorna os vértices adjacentes ao vértice atual. """
+        return [edge.origin if edge.destination == self else edge.destination for edge in self.children_edges]
 
-    def adiciona_arco(self, u, v):
-        """ Adiciona uma ligação (arco) entre os nodos 'u' e 'v'. """
-        self.adj[u].add(v)
-        # Se o grafo é não-direcionado, precisamos adicionar arcos nos dois sentidos.
-        if not self.direcionado:
-            self.adj[v].add(u)
+    def set_label_vertex(self, label):
+        """ Define o rótulo do vértice """
+        self.label = label
 
-    def existe_aresta(self, u, v):
-        """ Existe uma aresta entre os vértices 'u' e 'v'? """
-        # Retorna True se 'u' e 'v' são adjacentes.
-        if u in self.adj:
-            v in self.adj[u]
-        else:
+    def search_width(self, target):
+        """ Busca em largura """
+        visited = set()  # Conjunto de vértices visitados
+        queue = deque()  # Fila de vértices
+        queue.append(self)  # Adiciona o vértice atual na fila
+
+        # Enquanto a fila não estiver vazia
+        while queue:
+            # Retira o primeiro elemento da fila
+            vertex = queue.popleft()
+            # Se o vértice for o alvo
+            if vertex == target:
+                # Retorna o vértice
+                return vertex
+            # Adiciona o vértice na lista de visitados
+            visited.add(vertex)
+            # Para cada aresta do vértice
+            for edge in vertex.children_edges:
+                # Se o vértice for o vértice de origem da aresta
+                if edge.origin == vertex:
+                    # Se o vértice de destino da aresta não estiver na lista de visitados
+                    if edge.destination not in visited:
+                        # Adiciona o vértice de destino na fila
+                        queue.append(edge.destination)
+                # Se o vértice for o vértice de destino da aresta
+                elif edge.destination == vertex:
+                    # Se o vértice de origem da aresta não estiver na lista de visitados
+                    if edge.origin not in visited:
+                        # Adiciona o vértice de origem na fila
+                        queue.append(edge.origin)
+        return None
+
+    def search_depth(self, target):
+        """ Busca em profundidade """
+        visited = set()  # Conjunto de vértices visitados
+        stack = list()  # Pilha de vértices
+        stack.append(self)  # Adiciona o vértice atual na pilha
+
+        # Enquanto a pilha não estiver vazia
+        while stack:
+            # Retira o último elemento da pilha
+            vertex = stack.pop()
+            # Se o vértice for o alvo
+            if vertex == target:
+                # Retorna o vértice
+                return vertex
+            # Adiciona o vértice na lista de visitados
+            visited.add(vertex)
+            # Para cada aresta do vértice
+            for edge in vertex.children_edges:
+                # Se o vértice for o vértice de origem da aresta
+                if edge.origin == vertex:
+                    # Se o vértice de destino da aresta não estiver na lista de visitados
+                    if edge.destination not in visited:
+                        # Adiciona o vértice de destino na pilha
+                        stack.append(edge.destination)
+                # Se o vértice for o vértice de destino da aresta
+                elif edge.destination == vertex:
+                    # Se o vértice de origem da aresta não estiver na lista de visitados
+                    if edge.origin not in visited:
+                        # Adiciona o vértice de origem na pilha
+                        stack.append(edge.origin)
+        return None
+
+    def is_eulerian(self):
+        """ Verifica se o grafo é euleriano """
+
+        # Se o grafo for conexo
+        for edge in self.children_edges:
+            if edge.is_bridge():
+                return False
+
+        return True
+
+    def algorithm_tarjan(self):
+        """ Algoritmo de Tarjan """
+        visited = set()  # Conjunto de vértices visitados
+        stack = list()  # Pilha de vértices
+        stack.append(self)  # Adiciona o vértice atual na pilha
+
+        # Enquanto a pilha não estiver vazia
+        while stack:
+            # Retira o último elemento da pilha
+            vertex = stack.pop()
+            # Se o vértice for o alvo
+            if vertex not in visited:
+                # Retorna o vértice
+                visited.add(vertex)
+            # Adiciona o vértice na lista de visitados
+            for edge in vertex.children_edges:
+                # Se o vértice for o vértice de origem da aresta
+                if edge.origin == vertex:
+                    # Se o vértice de destino da aresta não estiver na lista de visitados
+                    if edge.destination not in visited:
+                        # Adiciona o vértice de destino na pilha
+                        stack.append(edge.destination)
+                # Se o vértice for o vértice de destino da aresta
+                elif edge.destination == vertex:
+                    # Se o vértice de origem da aresta não estiver na lista de visitados
+                    if edge.origin not in visited:
+                        # Adiciona o vértice de origem na pilha
+                        stack.append(edge.origin)
+        return visited
+
+    def algorithm_fleury(self):
+        """ Algoritmo de Fleury """
+        # Se o grafo for euleriano
+        if self.is_eulerian():
+            # Inicializa a lista de arestas
+            edges = list()
+            # Inicializa a lista de vértices
+            vertices = list()
+            # Adiciona o vértice atual na lista de vértices
+            vertices.append(self)
+            # Enquanto a lista de vértices não estiver vazia
+            while vertices:
+                # Retira o último vértice da lista
+                vertex = vertices.pop()
+                # Para cada aresta do vértice
+                for edge in vertex.children_edges:
+                    # Se a aresta não for ponte
+                    if not edge.is_bridge():
+                        # Adiciona a aresta na lista de arestas
+                        edges.append(edge)
+                        # Remove a aresta do grafo
+                        edge.remove_edge()
+                        # Adiciona o vértice de destino na lista de vértices
+                        vertices.append(edge.destination)
+            # Retorna a lista de arestas
+            return edges
+        return None
+
+    def vertex_weighting(self):
+        """ Retorna o peso do vértice """
+
+        # Se o vértice for o vértice de origem da aresta
+        return sum(edge.weight for edge in self.children_edges)
+
+    def __eq__(self, other):
+        return self.label == other.label if isinstance(other, type(self)) else False
+
+    def __hash__(self):
+        return hash((self.label, self.parent))
+
+    def __repr__(self):
+        return f"{type(self).__name__}({self.id}, {self.label}, {self.parent})"
+
+
+class Edge(object):
+    """ Classe que representa as arestas de um grafo """
+    id_counter = 0
+
+    def __init__(self, first, second, value):
+        self.id = Vertex.id_counter
+        self.first = first
+        self.second = second
+        self.value = value
+        self.destination = first if self.first != self.second else None
+        self.origin = second if self.first != self.second else None
+
+        Vertex.id_counter += 1
+
+    def is_bridge(self):
+        """ Verifica se a aresta é uma ponte """
+
+        # Se o vértice de origem da aresta for o vértice de destino da aresta
+        if self.first == self.second:
             return False
 
-    def remove_arco(self, u, v):
-        """ Remove a ligação (arco) entre os nodos 'u' e 'v'. """
-        # Remove a ligação (arco) entre os nodos 'u' e 'v'.
-        self.adj[u].remove(v)
-        # Se o grafo é não-direcionado, precisamos remover arcos nos dois sentidos.
-        if not self.direcionado:
-            self.adj[v].remove(u)
+        self.first.remove_edge(self)  # Remove a aresta do vértice de origem
+        self.second.remove_edge(self)  # Remove a aresta do vértice de destino
+        visited = self.first.algorithm_tarjan()  # Executa o algoritmo de Tarjan
+        self.first.add_edge(self)  # Adiciona a aresta no vértice de origem
+        self.second.add_edge(self)  # Adiciona a aresta no vértice de destino
+        return self.second not in visited  # Retorna se o vértice de destino está na lista de visitados
 
-    def vertices_adjacentes(self, v):
-        """ Retorna os vértices adjacentes ao vértice 'v'. """
-        # Retorna os vértices adjacentes.
-        return self.adj[v]
+    def edge_adjacency(self):
+        """ Retorna as arestas adjacentes à aresta atual. """
 
-    def arestas_adjacentes(self, v):
-        """ Retorna as arestas adjacentes ao vértice 'v'. """
-        # Retorna as arestas adjacentes.
-        return [(v, u) for u in self.adj[v]]
+        # Retorna as arestas adjacentes à aresta atual
+        return [edge for edge in self.first.children_edges if edge != self]
 
-    def grafo_completo(self):
-        """ Retorna um grafo completo. """
-        # Inicializa o grafo completo.
-        arestas = [(i, j) for i in self.get_vertices() for j in self.get_vertices()]
-        # Retorna o grafo completo.
-        if self.direcionado:
-            return Grafo(self.get_vertices(), arestas, direcionado=True)
-        else:
-            return Grafo(self.get_vertices(), arestas)
+    def edge_weighting(self, value):
+        """ Retorna o peso da aresta """
+        return self.value + value  # Retorna o peso da aresta
 
-    def caminho_minimo(self, s, t):
-        """ Retorna o menor caminho entre os vértices 's' e 't'. """
-        # Inicializa a árvore de busca em largura.
-        arvore = self.busca_largura(s)
-        # Se não existe caminho entre 's' e 't'.
-        if t not in arvore:
-            return None
-        # Inicializa o caminho mínimo.
-        caminho = [t]
-        # Enquanto o vértice atual não for 's'.
-        while caminho[-1] != s:
-            # Adiciona o vértice pai no caminho mínimo.
-            caminho.append(arvore[caminho[-1]])
-        # Retorna o caminho mínimo.
-        return caminho[::-1]
+    def __repr__(self):
+        return f"{type(self).__name__}({self.id}, {self.first}, {self.second}, {self.value})\n"
 
-    def pondera_vertices(self, pesos):
-        """ Pondera os vértices do grafo. """
-        # Inicializa o dicionário de pesos.
-        self.pesos = {}
-        # Para cada vértice do grafo.
-        for v in self.get_vertices():
-            # Adiciona o peso do vértice.
-            self.pesos[v] = pesos[v]
+    def __contains__(self, item):
+        return item in (self.first, self.second)
 
-    def set_rotulos(self, rotulos):
-        """ Define os rótulos dos vértices do grafo. """
-        # recebe os vertices
-        vertices = self.get_vertices()
-        # cria um dicionario de rotulos
-        self.rotulos = {}
-        # para cada vertice
-        for i in range(len(vertices)):
-            # adiciona o rotulo
-            self.rotulos[vertices[i]] = rotulos[i]
 
-    def rotula_arestas(self, rotulos):
-        """ Rotula as arestas do grafo. """
-        # Inicializa o dicionário de rótulos.
-        self.rotulos = {}
-        # Para cada aresta do grafo.
-        for a in self.get_arestas():
-            # Adiciona o rótulo da aresta.
-            self.rotulos[a] = rotulos[a]
+class Graph(object):
+    """ Implementação de um grafo. """
+    vertex_counter = 0
 
-    def busca_largura(self, s):
-        """ Retorna a árvore de busca em largura a partir do vértice 's'. """
-        # Inicializa a árvore de busca em largura.
-        arvore = {s: None}
-        # Inicializa a fila de busca.
-        fila = [s]
-        # Enquanto a fila não estiver vazia.
-        while fila:
-            # Retira o primeiro elemento da fila.
-            u = fila.pop(0)
-            # Para cada vértice adjacente a 'u'.
-            for v in self.vertices_adjacentes(u):
-                # Se o vértice ainda não foi visitado.
-                if v not in arvore:
-                    # Adiciona o vértice na árvore.
-                    arvore[v] = u
-                    # Adiciona o vértice na fila.
-                    fila.append(v)
-        return arvore
+    def __init__(self, matriz_adj):
+        self.root_vertex_list = set()  # Lista de vértices raiz
 
-    def busca_profundidade(self, s):
-        """ Retorna a árvore de busca em profundidade a partir do vértice 's'. """
-        # Inicializa a árvore de busca em profundidade.
-        arvore = {s: None}
-        # Inicializa a pilha de busca.
-        pilha = [s]
-        # Enquanto a pilha não estiver vazia.
-        while pilha:
-            # Retira o primeiro elemento da pilha.
-            u = pilha.pop()
-            # Para cada vértice adjacente a 'u'.
-            for v in self.vertices_adjacentes(u):
-                # Se o vértice ainda não foi visitado.
-                if v not in arvore:
-                    # Adiciona o vértice na árvore.
-                    arvore[v] = u
-                    # Adiciona o vértice na pilha.
-                    pilha.append(v)
-        return arvore
+        self.add_vertex(matriz_adj)  # Adiciona os vértices.
 
-    def naive_profundidade(self, s):
-        """ Retorna a árvore de busca em profundidade a partir do vértice 's'. """
-        # Inicializa a árvore de busca em profundidade.
-        arvore = {s: None}
-        # Inicializa a pilha de busca.
-        pilha = [s]
-        # Enquanto a pilha não estiver vazia.
-        while pilha:
-            # Retira o primeiro elemento da pilha.
-            u = pilha.pop()
-            # Para cada vértice adjacente a 'u'.
-            for v in self.vertices_adjacentes(u):
-                # Se o vértice ainda não foi visitado.
-                if v not in arvore:
-                    # Adiciona o vértice na árvore.
-                    arvore[v] = u
-                    # Adiciona o vértice na pilha.
-                    pilha.append(v)
-        return arvore
+    def add_vertex(self, lista_adj):
+        """ Retorna a lista de vértices do grafo. """
+        v1 = None  # Vértice 1
 
-    def fleury(self, s):
-        """ Retorna um ciclo euleriano a partir do vértice 's'. """
-        # Inicializa o ciclo euleriano.
-        ciclo = [s]
-        # Enquanto o grafo não estiver vazio.
-        while self.get_vertices():
-            # Para cada vértice adjacente ao vértice atual.
-            for v in self.vertices_adjacentes(ciclo[-1]):
-                # Se a aresta não é ponte.
-                if not self.is_ponte(ciclo[-1], v):
-                    # Adiciona o vértice adjacente ao ciclo euleriano.
-                    ciclo.append(v)
-                    # Remove a aresta do grafo.
-                    self.remove_arco(self, ciclo[-2], ciclo[-1])
-                    # Para o laço.
-                    break
-        # Retorna o ciclo euleriano.
-        return ciclo
+        # Para cada linha da matriz de adjacência
+        for idx, value in enumerate(lista_adj):
+            # Se o vértice 1 for None
+            if idx == 0:  # Se for a primeira linha
+                v1 = Vertex(value[0], None, None)  # Cria o vértice 1
 
-    def is_ponte(self, u, v):
-        """ Retorna True se a aresta (u, v) é ponte. """
-        # Remove a aresta do grafo.
-        self.remove_arco(u, v)
-        # Se a aresta é ponte.
-        if not self.eh_conexo():
-            # Adiciona a aresta no grafo.
-            self.adiciona_arco(u, v)
-            # Retorna True.
-            return True
-        # Adiciona a aresta no grafo.
-        self.adiciona_arco(u, v)
-        # Retorna False.
-        return False
+            v2 = Vertex(value[1], v1, None)  # Cria o vértice 2
 
-    def eh_conexo(self):
-        """ Retorna True se o grafo é conexo. """
-        # Inicializa a árvore de busca em largura.
-        arvore = self.busca_largura(self.get_vertices()[0])
-        # Se a árvore possui todos os vértices do grafo.
-        if len(arvore) == len(self.get_vertices()):
-            # Retorna True.
-            return True
-        # Retorna False.
-        return False
+            e1 = Edge(v1, v2, value[2])  # Cria a aresta 1
+
+            v1.add_edge(e1)  # Adiciona a aresta 1 no vértice 1
+
+            # Se o vértice 2 não estiver na lista de vértices raiz
+            if Graph.vertex_counter == 0 or v1.parent is None:
+                # Adiciona o vértice 2 na lista de vértices raiz
+                self.root_vertex_list.add(v1)
+
+            # Se o vértice 1 não estiver na lista de vértices raiz
+            Graph.vertex_counter += 1
+
+    def add_edge(self, first, second, value):
+        """ Adiciona uma aresta ao grafo. """
+
+        # Se o vértice 1 for o vértice 2
+        if first == second:
+            raise ValueError("Não é possível criar uma aresta entre um vértice e ele mesmo.")
+
+        self.add_vertex()  # Adiciona os vértices
+        self.add_vertex()  # Adiciona os vértices
+
+        e1 = Edge(first, second, value)  # Cria a aresta 1
+
+        first.add_edge(e1)  # Adiciona a aresta 1 no vértice 1
+        second.add_edge(e1)  # Adiciona a aresta 1 no vértice 2
+
+    def remove_edge(self, edge):
+        """ Remove uma aresta do grafo. """
+
+        for vertex in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
+            if edge.first == vertex:  # Se o vértice 1 for o vértice 1 da aresta
+                vertex.remove_edge(edge)  # Remove a aresta do vértice 1
+
+    def search_width(self, vertex):
+        """ Busca em largura. """
+
+        for v in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
+            if v == vertex:  # Se o vértice for o vértice de origem
+                return v.search_width(vertex)  # Retorna a busca em largura
+        return None
+
+    def search_depth(self, vertex):
+        """ Busca em profundidade. """
+
+        for v in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
+            if v == vertex:  # Se o vértice for o vértice de origem
+                return v.search_depth(vertex)  # Retorna a busca em profundidade
+        return None
 
     def tarjan(self):
-        """ Retorna as componentes fortemente conexas do grafo. """
-        # Inicializa a lista de componentes fortemente conexas.
-        componentes = []
-        # Inicializa a lista de vértices visitados.
-        visitados = []
-        # Inicializa a lista de vértices.
-        pilha = []
-        # Inicializa o índice.
-        indice = 0
-        # Para cada vértice do grafo.
-        for v in self.get_vertices():
-            # Se o vértice ainda não foi visitado.
-            if v not in visitados:
-                # Chama a função auxiliar.
-                componentes, visitados, pilha, indice = self.tarjan_aux(v, componentes, visitados, pilha, indice)
-        # Retorna a lista de componentes fortemente conexas.
-        return componentes
+        """ Algoritmo de Tarjan """
 
-    def tarjan_aux(self, v, componentes, visitados, pilha, indice):
-        """ Retorna as componentes fortemente conexas do grafo. """
-        # ERRO NO INDICE
-        # Inicializa o índice do vértice.
-        self.indices[v] = indice
-        # Inicializa o índice mínimo do vértice.
-        self.minimos[v] = indice
-        # Incrementa o índice.
-        indice += 1
-        # Adiciona o vértice na lista de visitados.
-        visitados.append(v)
-        # Adiciona o vértice na pilha.
-        pilha.append(v)
-        # Para cada vértice adjacente ao vértice atual.
-        for w in self.vertices_adjacentes(v):
-            # Se o vértice ainda não foi visitado.
-            if w not in visitados:
-                # Chama a função auxiliar.
-                componentes, visitados, pilha, indice = self.tarjan_aux(w, componentes, visitados, pilha, indice)
-                # Atualiza o índice mínimo do vértice.
-                self.minimos[v] = min(self.minimos[v], self.minimos[w])
-            # Se o vértice ainda está na pilha.
-            elif w in pilha:
-                # Atualiza o índice mínimo do vértice.
-                self.minimos[v] = min(self.minimos[v], self.indices[w])
-        # Se o índice do vértice é igual ao índice mínimo do vértice.
-        if self.indices[v] == self.minimos[v]:
-            # Inicializa a componente fortemente conexa.
-            componente = []
-            # Enquanto o vértice não for o vértice atual.
-            while pilha[-1] != v:
-                # Adiciona o vértice na componente.
-                componente.append(pilha.pop())
-            # Adiciona o vértice na componente.
-            componente.append(pilha.pop())
-            # Adiciona a componente na lista de componentes.
-            componentes.append(componente)
-        # Retorna a lista de componentes fortemente conexas.
-        return componentes, visitados, pilha, indice
+        visited = set()  # Lista de vértices visitados
 
-    def print_grafo(self):
-        """ Imprime o grafo. """
-        print(self.__str__())
+        for vertex in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
+            visited.update(vertex.algorithm_tarjan())  # Atualiza a lista de vértices visitados
 
-    def __len__(self):
+        return visited  # Retorna a lista de vértices visitados
+
+    def get_edges(self):
+        """ Retorna as arestas do grafo. """
+
+        edges = set()  # Lista de arestas
+
+        for vertex in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
+            edges.update(vertex.children_edges)  # Atualiza a lista de arestas
+
+        return edges  # Retorna a lista de arestas
+
+    def edge_contain(self, edge):
+        """ Verifica se a aresta pertence ao grafo. """
+        return edge in self.root_vertex_list.__contains__(edge)  # Retorna se a aresta pertence ao grafo
+
+    def edge_adjacency(self, edge):
+        """ Verifica se a aresta é adjacente. """
+
+        for vertex in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
+            if vertex == edge.first:  # Se o vértice for o vértice 1 da aresta
+                return vertex.edge_adjacency(edge)  # Retorna as arestas adjacentes à aresta
+
+        return False  # Retorna False
+
+    def vertex_adjacency(self, vertex):
+        """ Verifica se o vértice é adjacente. """
+
+        for v in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
+            if v == vertex:  # Se o vértice for o vértice de origem
+                return v.vertex_adjacency(vertex)  # Retorna os vértices adjacentes ao vértice
+
+        return False
+
+    def set_label_vertex(self):
+        """ Define os rótulos dos vértices. """
+
+        for vertex in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
+            vertex.set_label_vertex()  # Define o rótulo do vértice
+
+    def perform_edge_weighting(self):
+        """ Realiza o peso das arestas. """
+
+        for edge in self.get_edges():  # Para cada aresta na lista de arestas
+            if not edge.is_bridge():  # Se a aresta não for uma ponte
+                edge.edge_weighting(0)  # Realiza o peso da aresta
+            else:  # Se a aresta for uma ponte
+                edge.edge_weighting(1)  # Realiza o peso da aresta
+
+    def perform_vertex_weighting(self):
+        """ Realiza o peso dos vértices. """
+
+        for vertex in self.root_vertex_list:  # Para cada vértice na lista de vértices raiz
+            vertex.vertex_weighting()  # Realiza o peso do vértice
+
+    def get_number_vertices(self):
         """ Retorna o número de vértices do grafo. """
-        return len(self.adj)
+        return len(self.root_vertex_list)  # Retorna o número de vértices do grafo
 
-    def __str__(self):
-        """ Retorna a representação do grafo. """
-        return '{}({})'.format(self.__class__.__name__, dict(self.adj))
+    def get_number_edges(self):
+        """ Retorna o número de arestas do grafo. """
+        return len(self.get_edges())  # Retorna o número de arestas do grafo
 
-    def __getitem__(self, v):
-        """ Retorna a lista de vértices adjacentes ao vértice 'v'. """
-        return self.adj[v]
+    def has_edge(self, edge):
+        """ Verifica se o grafo possui a aresta. """
+        return edge in self.get_edges()
+
+    def is_empty(self):
+        """ Verifica se o grafo está vazio. """
+        return self.root_vertex_list == set()  # Retorna se o grafo está vazio
+
+    def is_complete(self):
+        """ Verifica se o grafo é completo. """
+        # Retorna se o grafo é completo
+        return self.get_number_edges() == (self.get_number_vertices() * (self.get_number_vertices() - 1)) / 2
+
+    def __repr__(self):
+        return f"{type(self).__name__}({self.root_vertex_list})"
